@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img1"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Rois App"
+        android:textColor="@color/blue2"
+        android:textAlignment="center"
+        android:fontFamily="serif-monospace"
+        android:textStyle="bold"
+        android:textSize="60dp"
+        android:padding="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Đăng nhập để đọc truyện"
+        android:textSize="10dp"
+        android:fontFamily="serif"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>
