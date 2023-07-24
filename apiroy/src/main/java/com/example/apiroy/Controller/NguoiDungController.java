@@ -2,7 +2,12 @@ package com.example.apiroy.Controller;
 
 
 import com.example.apiroy.Model.NguoiDung;
+import com.example.apiroy.Model.TacGia;
+import com.example.apiroy.Model.Truyen;
+import com.example.apiroy.Model.TruyenYeuThich;
 import com.example.apiroy.Repository.NguoiDungRepos;
+import com.example.apiroy.Service.NguoiDungService;
+import com.example.apiroy.Service.TacGiaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,55 +22,41 @@ import java.util.Map;
 public class NguoiDungController {
 
     @Autowired
-    private NguoiDungRepos nguoiDungRepos;
+    private NguoiDungService nguoiDungService;
 
     @GetMapping()
-    public List<NguoiDung> getAllUser() {
-        return nguoiDungRepos.findAll();
+    public List<NguoiDung> getAllNguoiDung() {
+        return nguoiDungService.getAllNguoiDung();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<NguoiDung> getUserById(@PathVariable(value = "id") Long id)
+    public ResponseEntity<NguoiDung> getNguoiDungById(@PathVariable(value = "id") Long id)
             throws Exception {
 
-        NguoiDung nguoiDung = nguoiDungRepos.findById(id).orElseThrow(() -> new Exception("Người dùng này không tồn tại: " + id));
-
-        return ResponseEntity.ok().body(nguoiDung);
+        return ResponseEntity.ok().body(nguoiDungService.getNguoiDungById(id));
     }
 
     @PostMapping()
-    public NguoiDung createUser(@Valid @RequestBody NguoiDung user) {
-        return nguoiDungRepos.save(user);
+    public NguoiDung createNguoiDung(@Valid @RequestBody NguoiDung nguoiDung) {
+        return nguoiDungService.createNguoiDung(nguoiDung);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<NguoiDung> updateUser(@PathVariable(value = "id") Long id,
-                                                @Valid @RequestBody NguoiDung nguoiDungDetails) throws Exception {
-        NguoiDung nguoiDung = nguoiDungRepos.findById(id)
-                .orElseThrow(() -> new Exception("Người dùng này không tồn tại: " + id));
-
-        nguoiDung.setId(nguoiDungDetails.getId());
-        nguoiDung.setUsername(nguoiDungDetails.getUsername());
-        nguoiDung.setPassword(nguoiDungDetails.getPassword());
-        nguoiDung.setEmail(nguoiDungDetails.getEmail());
-//        user.setDsTruyen(nguoiDungDetails.getDsTruyen());
-
-        final NguoiDung updatedNguoiDung = nguoiDungRepos.save(nguoiDung);
-
-        return ResponseEntity.ok(updatedNguoiDung);
+    public ResponseEntity<NguoiDung> updateNguoiDung(@PathVariable(value = "id") Long id,
+                                               @Valid @RequestBody NguoiDung nguoiDungDetails) throws Exception {
+        return ResponseEntity.ok(nguoiDungService.updateNguoiDung(id, nguoiDungDetails));
     }
 
     @DeleteMapping("{id}")
-    public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long id)
+    public Map<String, Boolean> deleteNguoiDung(@PathVariable(value = "id") Long id)
             throws Exception {
-
-        NguoiDung nguoiDung = nguoiDungRepos.findById(id)
-                .orElseThrow(() -> new Exception("Người dùng này không tồn tại: " + id));
-
-        nguoiDungRepos.delete(nguoiDung);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-
-        return response;
+        return nguoiDungService.deleteNguoiDung(id);
     }
+
+    @GetMapping("{id}/truyenyeuthich/")
+    public List<TruyenYeuThich> layDsTruyenYeuThichTheoNguoiDung(@PathVariable(value = "id") Long id) {
+        return nguoiDungService.layDsTruyenYeuThichTheoNguoiDung(id);
+    }
+
+
 }

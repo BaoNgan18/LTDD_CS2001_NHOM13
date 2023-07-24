@@ -20,7 +20,7 @@ public class TacGia {
     private Long id;
 
     @Column (name = "ten_tac_gia", nullable = false)
-    private String name;
+    private String tenTacGia;
 
     @JsonIgnore
     @OneToMany(mappedBy = "tacGia")
@@ -28,7 +28,7 @@ public class TacGia {
 
     public TacGia (Long id, String ten){
         this.id = id;
-        this.name = ten;
+        this.tenTacGia = ten;
     }
 
 }

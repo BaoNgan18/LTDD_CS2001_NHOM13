@@ -21,7 +21,6 @@ public class Truyen {
     @Column (name = "ten_truyen", nullable = false)
     private String tenTruyen;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "truyen_the_loai",
@@ -29,6 +28,9 @@ public class Truyen {
             inverseJoinColumns = @JoinColumn(name = "theloai_id")
     )
     private List<TheLoai> dsTheLoai;
+
+    @Column (name = "anh_bia", nullable = false)
+    private String anhBia;
 //    private int soChuong;
     @ManyToOne
     @JoinColumn(name = "tacgia_id")

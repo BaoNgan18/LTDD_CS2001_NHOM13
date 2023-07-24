@@ -5,7 +5,10 @@ import com.example.apiroy.Model.Truyen;
 import com.example.apiroy.Repository.TruyenRepos;
 import com.example.apiroy.Service.TruyenService;
 import jakarta.transaction.Transactional;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -16,6 +19,7 @@ import java.util.Map;
 @Transactional
 @RequiredArgsConstructor
 public class TruyenServiceImpl implements TruyenService {
+    @Autowired
     private TruyenRepos truyenRepos;
 
     public List<Truyen> getAllTruyen(){
@@ -56,6 +60,11 @@ public class TruyenServiceImpl implements TruyenService {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
+
+//    @Override
+//    public List<Truyen> getDSTheLoaiTheoTruyen(Long id) {
+//        return truyenRepos.getDSTheLoaiTheoTruyen(id);
+//    }
 
 
 }

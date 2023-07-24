@@ -1,11 +1,13 @@
 package com.example.apiroy.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "nguoi_dung")
@@ -30,8 +32,9 @@ public class NguoiDung {
     private LocalDateTime createdAt;
 
 //    private List<Truyen> dsTruyen;
-
-    // Các phương thức getter và setter cho các thuộc tính
+    @JsonIgnore
+    @OneToMany(mappedBy = "nguoiDung")
+    private List<TruyenYeuThich> dsTruyenYeuThich;
 
     public NguoiDung(Long id, String username, String password, String email) {
         this.id = id;

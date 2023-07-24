@@ -50,4 +50,9 @@ public class TruyenController {
         return truyenService.deleteTruyen(id);
     }
 
+//    @GetMapping("{id}/theloai/")
+//    public List<Truyen> getTruyenTheoTheLoai(@PathVariable(value = "id") Long id) {
+//        return truyenService.getDSTheLoaiTheoTruyen(id);
+//    }
+
 }

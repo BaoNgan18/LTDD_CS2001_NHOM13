@@ -17,4 +17,6 @@ public interface TruyenService {
     Truyen updateTruyen(Long id, Truyen truyenDetails) throws Exception;
 
     Map<String, Boolean> deleteTruyen(Long id) throws Exception;
+
+//    List<Truyen> getDSTheLoaiTheoTruyen(Long id);
 }

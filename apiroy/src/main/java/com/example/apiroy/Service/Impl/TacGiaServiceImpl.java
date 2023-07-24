@@ -44,7 +44,7 @@ public class TacGiaServiceImpl implements TacGiaService {
                 .orElseThrow(() -> new Exception("Tác giả này không tồn tại: " + id));
 
         tacGia.setId(tacGiaDetails.getId());
-        tacGia.setName(tacGiaDetails.getName());
+        tacGia.setTenTacGia(tacGiaDetails.getTenTacGia());
 
         return tacGiaRepos.save(tacGia);
     }
