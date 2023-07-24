@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,8 +26,7 @@ public class TheLoai {
     @ManyToMany(mappedBy = "dsTheLoai")
     private List<Truyen> dsTruyen;
 
-    public TheLoai (Long id, String type) {
-        this.setTenTheLoai(type);
-        this.id = id;
+    public TheLoai ( String theloai) {
+        this.setTenTheLoai(theloai);
     }
 }

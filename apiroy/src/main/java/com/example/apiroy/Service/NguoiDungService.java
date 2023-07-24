@@ -1,7 +1,7 @@
 package com.example.apiroy.Service;
 
 import com.example.apiroy.Model.NguoiDung;
-import com.example.apiroy.Model.TruyenYeuThich;
+import com.example.apiroy.Model.Truyen;
 
 import java.util.List;
 import java.util.Map;
@@ -17,5 +17,14 @@ public interface NguoiDungService {
 
     Map<String, Boolean> deleteNguoiDung(Long id) throws Exception;
 
-    List<TruyenYeuThich> layDsTruyenYeuThichTheoNguoiDung(Long id);
+
+    public List<Truyen> getTruyenTheoNguoiDung(Long id);
+
+    Truyen dangTruyen(Truyen truyen, Long nguoiDungId);
+
+    List<Truyen> layDSTruyenYeuThichTheoNguoiDung(Long id);
+
+    Truyen themTruyenVaoMucYeuThich(Truyen truyen, Long nguoiDungId);
+
+    Map<String, Boolean> xoaTruyenKhoiMucYeuThich(Truyen truyen, Long id) throws Exception;
 }

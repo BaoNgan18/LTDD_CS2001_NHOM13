@@ -25,5 +25,4 @@ public interface APIService {
     @GET("truyen")
     Call<List<Truyen>> layDSTruyen();
 
-
 }

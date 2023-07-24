@@ -35,7 +35,7 @@ public class TruyenAdapter extends RecyclerView.Adapter<TruyenAdapter.TruyenView
     public void onBindViewHolder(@NonNull TruyenViewHolder holder, int position) {
         holder.idTruyen.setText(truyenList.get(position).getId()+"");
         holder.tenTruyen.setText(truyenList.get(position).getTenTruyen());
-        holder.tenTacGia.setText(truyenList.get(position).getTacGia().getTen());
+        holder.tenTacGia.setText(truyenList.get(position).getNguoiDung().getUserName());
 
         StringBuilder sb = new StringBuilder();
         truyenList.get(position).getDsTheLoai().forEach( t -> sb.append(t.getTenTheLoai()+", "));

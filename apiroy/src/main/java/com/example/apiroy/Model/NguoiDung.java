@@ -20,7 +20,7 @@ public class NguoiDung {
     private long id;
 
     @Column (name = "ten_nguoi_dung", nullable = false)
-    private String username;
+    private String userName;
 
     @Column (name = "mat_khau", nullable = false)
     private String password;
@@ -31,14 +31,16 @@ public class NguoiDung {
     @Column (name = "ngay_tao", nullable = false)
     private LocalDateTime createdAt;
 
-//    private List<Truyen> dsTruyen;
-    @JsonIgnore
-    @OneToMany(mappedBy = "nguoiDung")
-    private List<TruyenYeuThich> dsTruyenYeuThich;
 
-    public NguoiDung(Long id, String username, String password, String email) {
-        this.id = id;
-        this.username = username;
+    @ManyToMany(mappedBy = "dsNguoiDungYeuThich")
+    private List<Truyen> dsTruyenYeuThich;
+
+
+    @OneToMany(mappedBy = "nguoiDung")
+    private List<Truyen> dsTruyen;
+
+    public NguoiDung(String username, String password, String email) {
+        this.userName = username;
         this.password = password;
         this.email = email;
     }

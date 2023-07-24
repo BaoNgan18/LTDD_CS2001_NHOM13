@@ -2,18 +2,13 @@ package com.example.apiroy.Controller;
 
 
 import com.example.apiroy.Model.NguoiDung;
-import com.example.apiroy.Model.TacGia;
 import com.example.apiroy.Model.Truyen;
-import com.example.apiroy.Model.TruyenYeuThich;
-import com.example.apiroy.Repository.NguoiDungRepos;
 import com.example.apiroy.Service.NguoiDungService;
-import com.example.apiroy.Service.TacGiaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +38,7 @@ public class NguoiDungController {
 
     @PutMapping("{id}")
     public ResponseEntity<NguoiDung> updateNguoiDung(@PathVariable(value = "id") Long id,
-                                               @Valid @RequestBody NguoiDung nguoiDungDetails) throws Exception {
+                                                     @Valid @RequestBody NguoiDung nguoiDungDetails) throws Exception {
         return ResponseEntity.ok(nguoiDungService.updateNguoiDung(id, nguoiDungDetails));
     }
 
@@ -54,9 +49,27 @@ public class NguoiDungController {
     }
 
     @GetMapping("{id}/truyenyeuthich/")
-    public List<TruyenYeuThich> layDsTruyenYeuThichTheoNguoiDung(@PathVariable(value = "id") Long id) {
-        return nguoiDungService.layDsTruyenYeuThichTheoNguoiDung(id);
+    public List<Truyen> layDSTruyenYeuThichTheoNguoiDung(@PathVariable(value = "id") Long id) {
+        return nguoiDungService.layDSTruyenYeuThichTheoNguoiDung(id);
     }
 
+    @GetMapping("{id}/truyen/")
+    public List<Truyen> getTruyenTheoNguoiDung(@PathVariable(value = "id") Long id) {
+        return nguoiDungService.getTruyenTheoNguoiDung(id);
+    }
 
+    @PostMapping("{id}/dang_truyen")
+    public Truyen dangTruyen(@Valid @RequestBody Truyen truyen,@PathVariable(value = "id") Long nguoiDungId){
+        return nguoiDungService.dangTruyen(truyen,nguoiDungId);
+    }
+    @PostMapping("{id}/yeu_thich")
+    public Truyen themTruyenVaoMucYeuThich(@Valid @RequestBody Truyen truyen, @PathVariable(value = "id")Long nguoiDungId){
+        return nguoiDungService.themTruyenVaoMucYeuThich(truyen, nguoiDungId);
+    }
+
+    @DeleteMapping("{id}/xoa_yeu_thich")
+    public Map<String, Boolean> xoaTruyenKhoiMucYeuThich(@Valid @RequestBody Truyen truyen,@PathVariable(value = "id") Long id)
+            throws Exception {
+        return nguoiDungService.xoaTruyenKhoiMucYeuThich(truyen, id);
+    }
 }
