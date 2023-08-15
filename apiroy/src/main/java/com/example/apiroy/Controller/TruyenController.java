@@ -1,8 +1,7 @@
 package com.example.apiroy.Controller;
 
-import com.example.apiroy.Model.TheLoai;
+
 import com.example.apiroy.Model.Truyen;
-import com.example.apiroy.Repository.TruyenRepos;
 import com.example.apiroy.Service.TruyenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 

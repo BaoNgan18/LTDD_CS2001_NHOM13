@@ -2,7 +2,6 @@ package com.example.apiroy.Controller;
 
 import com.example.apiroy.Model.TheLoai;
 import com.example.apiroy.Model.Truyen;
-import com.example.apiroy.Repository.TheLoaiRepos;
 import com.example.apiroy.Service.TheLoaiService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +48,7 @@ public class TheLoaiController {
         return theLoaiService.deleteTheLoai(id);
     }
 
-//    id the loai
+    // id the loai
     @GetMapping("{id}/truyen/")
     public List<Truyen> getTruyenTheoTheLoai(@PathVariable(value = "id") Long id) {
         return theLoaiService.getTruyenTheoTheLoai(id);

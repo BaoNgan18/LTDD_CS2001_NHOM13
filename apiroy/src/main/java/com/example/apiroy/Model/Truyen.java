@@ -21,6 +21,7 @@ public class Truyen {
     @Column (name = "ten_truyen", nullable = false)
     private String tenTruyen;
 
+
     @ManyToMany
     @JoinTable(
             name = "truyen_the_loai",
