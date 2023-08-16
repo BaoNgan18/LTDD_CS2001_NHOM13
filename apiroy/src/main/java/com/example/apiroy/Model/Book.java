@@ -14,12 +14,12 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Truyen {
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column (name = "ten_truyen", nullable = false)
-    private String tenTruyen;
+    private String nameBook;
 
 
     @ManyToMany
@@ -28,20 +28,20 @@ public class Truyen {
             joinColumns = @JoinColumn(name = "truyen_id"),
             inverseJoinColumns = @JoinColumn(name = "theloai_id")
     )
-    private List<TheLoai> dsTheLoai;
+    private List<Gerne> listGerne;
 
     @Column (name = "anh_bia", nullable = false)
-    private String anhBia;
+    private String coverImg;
 
     @ManyToOne
     @JoinColumn(name = "nguoidung_id")
-    private NguoiDung nguoiDung;
+    private User user;
 
     @Column(name = "mo_ta_truyen", length = 5000)
-    private String moTaTruyen;
+    private String describe;
 
     @Column(name = "noi_dung_chuong", length = 50000)
-    private String noiDungChuong;
+    private String content;
 
     @JsonIgnore
     @ManyToMany
@@ -50,14 +50,14 @@ public class Truyen {
             joinColumns = @JoinColumn(name = "truyen_id"),
             inverseJoinColumns = @JoinColumn(name = "nguoidung_id")
     )
-    private List<NguoiDung> dsNguoiDungYeuThich;
+    private List<User> listUserPressingLove;
 
-    public Truyen(String ten, NguoiDung tacGia, String moTaTruyen, String noiDungChuong, String anhBia, List<TheLoai> dsTheLoai){
-        this.setTenTruyen(ten);
-        this.setNguoiDung(tacGia);
-        this.setMoTaTruyen(moTaTruyen);
-        this.setNoiDungChuong(noiDungChuong);
-        this.setAnhBia(anhBia);
-        this.setDsTheLoai(dsTheLoai);
+    public Book(String nameBook, User author, String describe, String content, String coverImg, List<Gerne> listGerne){
+        this.setNameBook(nameBook);
+        this.setUser(author);
+        this.setDescribe(describe);
+        this.setContent(content);
+        this.setCoverImg(coverImg);
+        this.setListGerne(listGerne);
     }
 }

@@ -17,7 +17,7 @@ import app.demo.Adapter.ViewPagerAdapter;
 public class MainActivity extends AppCompatActivity {
 
 //    RecyclerView rcvTruyen;
-//    List<Truyen> truyenList;
+//    List<Book> truyenList;
 
     private ViewPager2 mViewPager;
     private BottomNavigationView mBotNav;
@@ -95,17 +95,17 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 //    public void  CallAPI(){
-//        APIService.API_SERVICE.layDSTruyen().enqueue(new Callback<List<Truyen>>() {
+//        APIService.API_SERVICE.layDSTruyen().enqueue(new Callback<List<Book>>() {
 //            @Override
-//            public void onResponse(Call<List<Truyen>> call, Response<List<Truyen>> response) {
+//            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
 //                truyenList.addAll(response.body());
-//                TruyenAdapter truyenAdapter = new TruyenAdapter(truyenList);
+//                BookAdapter truyenAdapter = new BookAdapter(truyenList);
 //                rcvTruyen.setAdapter(truyenAdapter);
 //                Toast.makeText(MainActivity.this, "Thanh cong", Toast.LENGTH_SHORT).show();
 //            }
 //
 //            @Override
-//            public void onFailure(Call<List<Truyen>> call, Throwable t) {
+//            public void onFailure(Call<List<Book>> call, Throwable t) {
 //                Toast.makeText(MainActivity.this, "That bai", Toast.LENGTH_SHORT).show();
 //            }
 //        });

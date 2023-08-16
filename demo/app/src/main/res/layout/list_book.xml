@@ -12,14 +12,14 @@
         android:text="id"
         android:textSize="20sp"/>
     <TextView
-        android:id="@+id/tv_tentruyen"
+        android:id="@+id/tv_nameBook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="tentruyen"
         android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/tv_theloai"
+        android:id="@+id/tv_gerne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="theloai"
@@ -27,7 +27,7 @@
 
 
     <TextView
-        android:id="@+id/tv_tentacgia"
+        android:id="@+id/tv_nameOfAuthor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="tacgia"

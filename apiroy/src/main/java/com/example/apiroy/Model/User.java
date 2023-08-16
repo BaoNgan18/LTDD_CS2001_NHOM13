@@ -1,6 +1,5 @@
 package com.example.apiroy.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NguoiDung {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -32,14 +31,14 @@ public class NguoiDung {
     private LocalDateTime createdAt;
 
 
-    @ManyToMany(mappedBy = "dsNguoiDungYeuThich")
-    private List<Truyen> dsTruyenYeuThich;
+    @ManyToMany(mappedBy = "listUserPressingLove")
+    private List<Book> listFavoriteBook;
 
 
-    @OneToMany(mappedBy = "nguoiDung")
-    private List<Truyen> dsTruyen;
+    @OneToMany(mappedBy = "user")
+    private List<Book> listBooks;
 
-    public NguoiDung(String username, String password, String email) {
+    public User(String username, String password, String email) {
         this.userName = username;
         this.password = password;
         this.email = email;

@@ -3,7 +3,7 @@ package app.demo.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class NguoiDung {
+public class User {
     private long id;
 
     private String userName;
@@ -18,10 +18,10 @@ public class NguoiDung {
     private LocalDateTime createdAt;
 
 
-    private List<Truyen> dsTruyenYeuThich;
+    private List<Book> listFavoriteBook;
 
 
-    private List<Truyen> dsTruyen;
+    private List<Book> listBook;
 
     public long getId() {
         return id;
@@ -63,19 +63,19 @@ public class NguoiDung {
         this.createdAt = createdAt;
     }
 
-    public List<Truyen> getDsTruyenYeuThich() {
-        return dsTruyenYeuThich;
+    public List<Book> getListFavoriteBook() {
+        return listFavoriteBook;
     }
 
-    public void setDsTruyenYeuThich(List<Truyen> dsTruyenYeuThich) {
-        this.dsTruyenYeuThich = dsTruyenYeuThich;
+    public void setListFavoriteBook(List<Book> listFavoriteBook) {
+        this.listFavoriteBook = listFavoriteBook;
     }
 
-    public List<Truyen> getDsTruyen() {
-        return dsTruyen;
+    public List<Book> getListBook() {
+        return listBook;
     }
 
-    public void setDsTruyen(List<Truyen> dsTruyen) {
-        this.dsTruyen = dsTruyen;
+    public void setListBook(List<Book> listBook) {
+        this.listBook = listBook;
     }
 }
