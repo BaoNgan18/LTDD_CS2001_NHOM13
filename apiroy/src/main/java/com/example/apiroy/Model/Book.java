@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class Book {
             joinColumns = @JoinColumn(name = "truyen_id"),
             inverseJoinColumns = @JoinColumn(name = "theloai_id")
     )
-    private List<Gerne> listGerne;
+    private List<Genre> listGenre;
 
     @Column (name = "anh_bia", nullable = true)
     private String coverImg;
@@ -58,12 +57,12 @@ public class Book {
 //    @Transient
 //    private MultipartFile file;
 
-    public Book(String nameBook, User author, String describe, String content, String coverImg, List<Gerne> listGerne){
+    public Book(String nameBook, User author, String describe, String content, String coverImg, List<Genre> listGenre){
         this.setNameBook(nameBook);
         this.setUser(author);
         this.setDescribe(describe);
         this.setContent(content);
         this.setCoverImg(coverImg);
-        this.setListGerne(listGerne);
+        this.setListGenre(listGenre);
     }
 }

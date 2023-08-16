@@ -13,20 +13,20 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Gerne {
+public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column (name = "ten_the_loai", nullable = false)
-    private String nameOfGerne;
+    private String nameOfGenre;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "listGerne")
+    @ManyToMany(mappedBy = "listGenre")
     private List<Book> listBook;
 
-    public Gerne(String gerne) {
-        this.setNameOfGerne(gerne);
+    public Genre(String genre) {
+        this.setNameOfGenre(genre);
     }
 }

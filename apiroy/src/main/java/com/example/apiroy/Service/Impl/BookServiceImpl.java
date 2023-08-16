@@ -58,8 +58,8 @@ public class BookServiceImpl implements BookService {
             book.setUser(bookDetails.getUser());
         }
         // So sánh và cập nhật thể loại nếu có thay đổi
-        if (!Objects.equals(book.getListGerne(), bookDetails.getListGerne())) {
-            book.setListGerne(bookDetails.getListGerne());
+        if (!Objects.equals(book.getListGenre(), bookDetails.getListGenre())) {
+            book.setListGenre(bookDetails.getListGenre());
         }
         // So sánh và cập nhật ảnh bìa nếu có thay đổi
         if (!Objects.equals(book.getCoverImg(), bookDetails.getCoverImg())) {
