@@ -6,8 +6,10 @@ import com.example.apiroy.Model.User;
 import com.example.apiroy.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,7 @@ public class UserController {
 
     @PutMapping("{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long id,
-                                                @Valid @RequestBody User userDetails) throws Exception {
+                                           @Valid @RequestBody User userDetails) throws Exception {
         return ResponseEntity.ok(userService.updateUser(id, userDetails));
     }
 
@@ -59,11 +61,12 @@ public class UserController {
     }
 
     @PostMapping("{id}/dang_truyen")
-    public Book postBook(@Valid @RequestBody Book book, @PathVariable(value = "id") Long userId){
-        return userService.postBook(book,userId);
+    public Book postBook(@Valid @RequestBody Book book, @PathVariable(value = "id") Long userId) {
+        return userService.postBook(book, userId);
     }
+
     @PostMapping("{id}/yeu_thich")
-    public Book addBookInFavorites(@Valid @RequestBody Book book, @PathVariable(value = "id")Long userId){
+    public Book addBookInFavorites(@Valid @RequestBody Book book, @PathVariable(value = "id") Long userId) {
         return userService.addBookInFavorites(book, userId);
     }
 

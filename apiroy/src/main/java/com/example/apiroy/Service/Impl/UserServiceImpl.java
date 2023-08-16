@@ -8,8 +8,10 @@ import com.example.apiroy.Service.UserService;
 import com.example.apiroy.Service.BookService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +21,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
     private BookService bookService;
 
+    @Autowired
     private BookRepository bookRepository;
 
     @Override
@@ -38,6 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        user.setCreatedAt(LocalDateTime.now());
         return userRepository.save(user);
     }
 
@@ -70,9 +76,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Book postBook(Book book, Long userId) {
+        System.out.println("[DEBUG] - START POST BOOK");
         User author = userRepository.findById(userId).get();
         book.setUser(author);
-        return bookService.createBook(book);
+        System.out.println("[DEBUG] - " + bookService);
+        Book createdBook = bookService.createBook(book);
+        System.out.println("[DEBUG] - " + createdBook);
+        return createdBook;
     }
 
     @Override

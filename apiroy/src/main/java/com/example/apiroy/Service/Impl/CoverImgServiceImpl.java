@@ -14,6 +14,7 @@ public class CoverImgServiceImpl implements CoverImgService {
     private Cloudinary cloudinary;
 
     public String uploadImage(MultipartFile imageFile) throws IOException {
+        System.out.println("[DEBUT] - START UPLOAD IMAGE");
         Map<?, ?> uploadResult = cloudinary.uploader().upload(imageFile.getBytes(), ObjectUtils.emptyMap());
         return uploadResult.get("secure_url").toString();
     }

@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +33,7 @@ public class Book {
     )
     private List<Gerne> listGerne;
 
-    @Column (name = "anh_bia", nullable = false)
+    @Column (name = "anh_bia", nullable = true)
     private String coverImg;
 
     @ManyToOne
@@ -51,6 +54,9 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "nguoidung_id")
     )
     private List<User> listUserPressingLove;
+
+//    @Transient
+//    private MultipartFile file;
 
     public Book(String nameBook, User author, String describe, String content, String coverImg, List<Gerne> listGerne){
         this.setNameBook(nameBook);
