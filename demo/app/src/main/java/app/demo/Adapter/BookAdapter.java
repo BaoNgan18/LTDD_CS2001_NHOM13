@@ -33,11 +33,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.TruyenViewHold
         holder.nameOfAuthor.setText(bookList.get(position).getUser().getUserName());
 
         StringBuilder sb = new StringBuilder();
-        bookList.get(position).getListGerne().forEach(t -> sb.append(t.getNameOfGerne()+", "));
+        bookList.get(position).getListGenre().forEach(t -> sb.append(t.getNameOfGenre()+", "));
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
-        holder.listGerne.setText(sb.toString());
+        holder.listGenre.setText(sb.toString());
 
     }
 
@@ -47,15 +47,15 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.TruyenViewHold
     }
 
     public static class TruyenViewHolder extends  RecyclerView.ViewHolder{
-        TextView idBook, nameBook, nameOfAuthor, listGerne;
+        TextView idBook, nameBook, nameOfAuthor, listGenre;
 
 
 
         public TruyenViewHolder(@NonNull View itemView) {
             super(itemView);
-            idBook = itemView.findViewById(R.id.tv_id);
+//            idBook = itemView.findViewById(R.id.tv_id);
             nameBook = itemView.findViewById(R.id.tv_nameBook);
-            listGerne = itemView.findViewById(R.id.tv_gerne);
+            listGenre = itemView.findViewById(R.id.tv_genre);
             nameOfAuthor = itemView.findViewById(R.id.tv_nameOfAuthor);
 
 

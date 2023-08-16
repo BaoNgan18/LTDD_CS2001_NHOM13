@@ -6,7 +6,7 @@ import java.util.List;
 public class Book {
     private Long id;
     private String nameBook;
-    private List<Gerne> listGerne;
+    private List<Genre> listGenre;
 
     private String coverImg;
     private User user;
@@ -34,12 +34,12 @@ public class Book {
         this.nameBook = nameBook;
     }
 
-    public List<Gerne> getListGerne() {
-        return listGerne;
+    public List<Genre> getListGenre() {
+        return listGenre;
     }
 
-    public void setListGerne(List<Gerne> listGerne) {
-        this.listGerne = listGerne;
+    public void setListGenre(List<Genre> listGenre) {
+        this.listGenre = listGenre;
     }
 
     public String getCoverImg() {
