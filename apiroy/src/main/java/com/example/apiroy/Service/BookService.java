@@ -17,5 +17,5 @@ public interface BookService {
 
     Map<String, Boolean> deleteBook(Long id) throws Exception;
 
-//    List<Book> getDSTheLoaiTheoTruyen(Long id);
+    Book postBook(Book book, Long userId);
 }

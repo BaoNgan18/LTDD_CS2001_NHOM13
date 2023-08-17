@@ -20,7 +20,7 @@ public interface UserService {
 
     public List<Book> getBookByUser(Long id);
 
-    Book postBook(Book book, Long nguoiDungId);
+//    Book postBook(Book book, Long nguoiDungId);
 
     List<Book> getListFavoriteBookByUser(Long id);
 

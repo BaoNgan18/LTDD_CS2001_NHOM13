@@ -1,8 +1,12 @@
 package com.example.apiroy.Service.Impl;
 
 import com.example.apiroy.Model.Book;
+import com.example.apiroy.Model.User;
 import com.example.apiroy.Repository.BookRepository;
+import com.example.apiroy.Repository.GenreRepository;
+import com.example.apiroy.Repository.UserRepository;
 import com.example.apiroy.Service.BookService;
+import com.example.apiroy.Service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,12 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private GenreRepository genreRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     public List<Book> getAllBook(){
         return bookRepository.findAll();
     }
@@ -34,6 +44,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book createBook(Book book) {
         return bookRepository.save(book);
+    }
+
+    @Override
+    public Book postBook(Book book, Long userId) {
+        System.out.println("[DEBUG] - START POST BOOK");
+        User author = userRepository.findById(userId).get();
+        book.setUser(author);
+        Book createdBook = createBook(book);
+        return createdBook;
     }
 
     @Override

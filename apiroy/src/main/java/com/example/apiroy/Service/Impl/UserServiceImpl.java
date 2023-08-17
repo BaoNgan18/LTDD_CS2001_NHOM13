@@ -74,16 +74,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.getBookByUser(id);
     }
 
-    @Override
-    public Book postBook(Book book, Long userId) {
-        System.out.println("[DEBUG] - START POST BOOK");
-        User author = userRepository.findById(userId).get();
-        book.setUser(author);
-        System.out.println("[DEBUG] - " + bookService);
-        Book createdBook = bookService.createBook(book);
-        System.out.println("[DEBUG] - " + createdBook);
-        return createdBook;
-    }
 
     @Override
     public List<Book> getListFavoriteBookByUser(Long id) {

@@ -23,7 +23,6 @@ public class Book {
     @Column (name = "ten_truyen", nullable = false)
     private String nameBook;
 
-
     @ManyToMany
     @JoinTable(
             name = "truyen_the_loai",

@@ -37,13 +37,11 @@ public class BookController {
         return ResponseEntity.ok().body(bookService.getBookByID(id));
     }
 
-//    @PostMapping("/dang-book")
-//    public ResponseEntity<Book> createBook(@RequestBody Book book) throws IOException {
-//        Book bookMoi = bookService.createBook(book);
-////        String coverImgUrl = coverImgService.uploadImage(coverImg);
-////        bookMoi.setCoverImg(coverImgUrl);
-//        return new ResponseEntity<>(bookMoi, HttpStatus.CREATED);
-//    }
+    @PostMapping("{id}/dang_truyen")
+    public ResponseEntity<?> postBook(@Valid @RequestBody Book book, @PathVariable(value = "id") Long userId) {
+        Book bookMoi = bookService.postBook(book, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookMoi);
+    }
 
     @PutMapping("{id}/cap-nhat-truyen")
     public ResponseEntity<Book> updateBook(@PathVariable(value = "id") Long id,
