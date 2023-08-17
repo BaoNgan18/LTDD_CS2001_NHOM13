@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frm_load"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.LoadFragment"
+    android:background="@drawable/bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/r_1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"/>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:text="Đăng nhập để đọc truyện"
+            android:background="@drawable/radius_button"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:textSize="20dp"/>
+
+        <View
+            android:layout_marginTop="30dp"
+            android:id="@+id/bottomBorder"
+            android:layout_width="300dp"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn chưa có tài khoản?"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18dp"/>
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="300dp"
+            android:layout_height="55dp"
+            android:text="Đăng ký"
+            android:background="@drawable/radius_button"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textSize="20dp"/>
+    </LinearLayout>
+
+
+</FrameLayout>
