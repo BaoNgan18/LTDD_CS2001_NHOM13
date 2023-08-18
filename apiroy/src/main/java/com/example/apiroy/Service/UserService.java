@@ -24,7 +24,7 @@ public interface UserService {
 
     List<Book> getListFavoriteBookByUser(Long id);
 
-    Book addBookInFavorites(Book book, Long nguoiDungId);
+    Book addBookInFavorites(Long userId,Long bookId) throws Exception;
 
-    Map<String, Boolean> removeBookFromFavorites(Book book, Long id) throws Exception;
+    Book removeBookFromFavorites(Long userId,Long bookId) throws Exception;
 }

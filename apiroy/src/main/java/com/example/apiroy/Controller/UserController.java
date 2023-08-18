@@ -6,11 +6,13 @@ import com.example.apiroy.Model.User;
 import com.example.apiroy.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,14 +62,33 @@ public class UserController {
         return userService.getBookByUser(id);
     }
 
-    @PostMapping("{id}/yeu_thich")
-    public Book addBookInFavorites(@Valid @RequestBody Book book, @PathVariable(value = "id") Long userId) {
-        return userService.addBookInFavorites(book, userId);
+//    @PostMapping("{id}/yeu_thich")
+//    public Book addBookInFavorites(@Valid @RequestBody Book book, @PathVariable(value = "id") Long userId) {
+//        return userService.addBookInFavorites(book, userId);
+//    }
+
+    @PostMapping("/{nguoidung_id}/yeuthich/{truyen_id}")
+    public ResponseEntity<String> addBookInFavorites(
+            @PathVariable(value = "nguoidung_id") Long userId,
+            @PathVariable(value = "truyen_id") Long bookId) {
+        try {
+            userService.addBookInFavorites(userId, bookId);
+            return ResponseEntity.ok("Đã thêm truyện vào mục yêu thích.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Thêm truyện vào mục yêu thích thất bại.");
+        }
     }
 
-    @DeleteMapping("{id}/xoa_yeu_thich")
-    public Map<String, Boolean> removeBookFromFavorites(@Valid @RequestBody Book book, @PathVariable(value = "id") Long id)
-            throws Exception {
-        return userService.removeBookFromFavorites(book, id);
+
+    @DeleteMapping("{userId}/xoayeuthich/{bookId}")
+    public ResponseEntity<String> removeBookFromFavorites(@PathVariable(value = "bookId") Long bookId,
+                                                                       @PathVariable(value = "userId") Long userId) {
+        try {
+            userService.removeBookFromFavorites(bookId, userId);
+            return ResponseEntity.ok("Đã xóa truyện khỏi mục yêu thích.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Xóa truyện khỏi mục yêu thích thất bại.");
+        }
     }
+
 }

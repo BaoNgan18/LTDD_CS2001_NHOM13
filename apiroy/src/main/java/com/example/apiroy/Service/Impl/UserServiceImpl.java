@@ -81,26 +81,41 @@ public class UserServiceImpl implements UserService {
         return userRepository.getListFavoriteBookByUser(id);
     }
 
-    @Override
-    public Book addBookInFavorites(Book book, Long userId) {
-        User user = userRepository.findById(userId).get();
-        user.getListBooks().add(book);
-        book.getListUserPressingLove().add(user);
-        userRepository.save(user);
-        bookRepository.save(book);
+
+    public Book addBookInFavorites(Long userId, Long bookId) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("User not found: " + userId));
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new Exception("Book not found: " + bookId));
+        if(!user.getListFavoriteBook().contains(book)){
+            System.out.println("[DEBUG] - User: " + user);
+            System.out.println("[DEBUG] - Book: " + book);
+            user.getListFavoriteBook().add(book);
+            book.getListUserPressingLove().add(user);
+            userRepository.save(user);
+        }
         return book;
     }
 
-    public Map<String, Boolean> removeBookFromFavorites(Book book, Long userId) throws Exception{
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new Exception("Người dùng này không tồn tại: " + userId));
 
-        user.getListFavoriteBook().remove(book);
-        book.getListUserPressingLove().remove(user);
-        userRepository.save(user);
-        bookRepository.save(book);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+    public Book removeBookFromFavorites(Long bookId, Long userId) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("User not found: " + userId));
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new Exception("Book not found: " + bookId));
+
+        if (user.getListFavoriteBook().contains(book)) {
+            System.out.println("[DEBUG] - User: " + user);
+            System.out.println("[DEBUG] - Book: " + book);
+            user.getListFavoriteBook().remove(book);
+            book.getListUserPressingLove().remove(user);
+            userRepository.save(user);
+        } else{
+            throw new Exception();
+        }
+        return book;
     }
+
 }

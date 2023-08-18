@@ -38,6 +38,7 @@ CREATE TABLE `truyen_yeu_thich_nguoi_dung` (
 
 LOCK TABLES `truyen_yeu_thich_nguoi_dung` WRITE;
 /*!40000 ALTER TABLE `truyen_yeu_thich_nguoi_dung` DISABLE KEYS */;
+INSERT INTO `truyen_yeu_thich_nguoi_dung` VALUES (6,19),(2,16),(6,20),(2,20),(6,21),(2,21);
 /*!40000 ALTER TABLE `truyen_yeu_thich_nguoi_dung` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-18  9:31:01
+-- Dump completed on 2023-08-18 14:55:11
