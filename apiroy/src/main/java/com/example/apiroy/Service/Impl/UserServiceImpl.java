@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new Exception("Người dùng này không tồn tại: " + id));
 
         user.setUserName(userDetails.getUserName());
+        user.setEmail(userDetails.getEmail());
         user.setPassword(userDetails.getPassword());
         return userRepository.save(user);
     }

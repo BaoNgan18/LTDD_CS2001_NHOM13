@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS `truyen_yeu_thich_nguoi_dung`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `truyen_yeu_thich_nguoi_dung` (
-  `truyen_id` bigint NOT NULL,
   `nguoidung_id` bigint NOT NULL,
+  `truyen_id` bigint NOT NULL,
   KEY `FKg1wg26fgyneohspi39g2ssrhf` (`nguoidung_id`),
   KEY `FKkyme8l1gno0hjxg5oi408o8mj` (`truyen_id`),
   CONSTRAINT `FKg1wg26fgyneohspi39g2ssrhf` FOREIGN KEY (`nguoidung_id`) REFERENCES `nguoi_dung` (`id`),
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-16 11:19:35
+-- Dump completed on 2023-08-18  9:31:01
