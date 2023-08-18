@@ -16,30 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `truyen_the_loai`
+-- Table structure for table `nguoi_dung`
 --
 
-DROP TABLE IF EXISTS `truyen_the_loai`;
+DROP TABLE IF EXISTS `nguoi_dung`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `truyen_the_loai` (
-  `theloai_id` bigint NOT NULL,
-  `truyen_id` bigint NOT NULL,
-  KEY `FK778ei5wrsfr858wjicjhfwkvh` (`theloai_id`),
-  KEY `FK6xluvnsg3k6i0w62st3t31myo` (`truyen_id`),
-  CONSTRAINT `FK6xluvnsg3k6i0w62st3t31myo` FOREIGN KEY (`truyen_id`) REFERENCES `truyen` (`id`),
-  CONSTRAINT `FK778ei5wrsfr858wjicjhfwkvh` FOREIGN KEY (`theloai_id`) REFERENCES `the_loai` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_as_ci;
+CREATE TABLE `nguoi_dung` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `ngay_tao` datetime(6) NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_0900_as_ci NOT NULL,
+  `mat_khau` varchar(255) COLLATE utf8mb4_0900_as_ci NOT NULL,
+  `ten_nguoi_dung` varchar(255) COLLATE utf8mb4_0900_as_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_as_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `truyen_the_loai`
+-- Dumping data for table `nguoi_dung`
 --
 
-LOCK TABLES `truyen_the_loai` WRITE;
-/*!40000 ALTER TABLE `truyen_the_loai` DISABLE KEYS */;
-INSERT INTO `truyen_the_loai` VALUES (1,1),(2,1),(3,1),(1,2),(2,2),(1,3),(2,3),(1,4),(2,4),(12,16),(13,16),(14,16),(11,17),(5,17),(14,17),(15,19),(6,19),(13,19),(3,21),(5,21),(15,21),(17,21),(3,20),(5,20),(15,20),(17,20);
-/*!40000 ALTER TABLE `truyen_the_loai` ENABLE KEYS */;
+LOCK TABLES `nguoi_dung` WRITE;
+/*!40000 ALTER TABLE `nguoi_dung` DISABLE KEYS */;
+INSERT INTO `nguoi_dung` VALUES (1,'2023-08-16 13:35:16.712820','haiphan@gmail.com','123456','haiphan10'),(2,'2023-08-17 19:47:53.842502','thanhhy444@gmail.com','444444','hyhyne'),(3,'2023-08-17 19:51:33.966988','key123@gmail.com','260406','MeiMeiOs'),(5,'2023-08-17 20:13:01.314404','Ngan68@gmail.com','68686868','Bao Ngan'),(6,'2023-08-17 20:13:32.095241','haha@gmail.com','17','Khanh'),(7,'2023-08-17 20:14:02.588672','lebaoquoc@gmail.com','98989898','Jinq'),(8,'2023-08-17 20:14:46.075525','linhngocnguyen@gmail.com','999999','NLinh'),(9,'2023-08-17 20:23:16.646363','hauphuoc27@gmail.com','201220','Hau Phuoc');
+/*!40000 ALTER TABLE `nguoi_dung` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-18 14:55:11
+-- Dump completed on 2023-08-18 16:03:35

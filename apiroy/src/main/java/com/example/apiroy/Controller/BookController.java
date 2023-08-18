@@ -23,6 +23,7 @@ import java.util.Map;
 public class BookController {
     @Autowired
     private BookService bookService;
+    @Autowired
     private CoverImgService coverImgService;
 
     @GetMapping()
@@ -55,6 +56,14 @@ public class BookController {
         return bookService.deleteBook(id);
     }
 
-
+    @PostMapping("{id}/dang-anh")
+    public ResponseEntity<?>  postCoverImg(@RequestParam("file") MultipartFile file, @PathVariable Long id){
+        try {
+            Book book = bookService.postCoverImg(file, id);
+            return ResponseEntity.ok(book);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }

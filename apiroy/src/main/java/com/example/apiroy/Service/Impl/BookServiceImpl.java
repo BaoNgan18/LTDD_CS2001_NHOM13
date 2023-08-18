@@ -6,19 +6,22 @@ import com.example.apiroy.Repository.BookRepository;
 import com.example.apiroy.Repository.GenreRepository;
 import com.example.apiroy.Repository.UserRepository;
 import com.example.apiroy.Service.BookService;
+import com.example.apiroy.Service.CoverImgService;
 import com.example.apiroy.Service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @Service
-@Transactional
+@Transactional(rollbackOn = Exception.class)
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     @Autowired
@@ -26,9 +29,10 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private GenreRepository genreRepository;
-
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CoverImgService coverImgService;
 
     public List<Book> getAllBook(){
         return bookRepository.findAll();
@@ -53,6 +57,19 @@ public class BookServiceImpl implements BookService {
         book.setUser(author);
         Book createdBook = createBook(book);
         return createdBook;
+    }
+
+    @Override
+    public Book postCoverImg(MultipartFile file, Long id) throws Exception {
+        try {
+            String url = coverImgService.uploadImage(file);
+            Book book = bookRepository.findById(id).get();
+            book.setCoverImg(url);
+            bookRepository.save(book);
+            return book;
+        } catch (IOException e) {
+            throw new Exception("Fail to upload image");
+        }
     }
 
     @Override
