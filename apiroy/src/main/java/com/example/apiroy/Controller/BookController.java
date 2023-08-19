@@ -27,8 +27,8 @@ public class BookController {
     private CoverImgService coverImgService;
 
     @GetMapping()
-    public List<Book> getAllBook() {
-        return bookService.getAllBook();
+    public ResponseEntity<?> getAllBook() {
+        return ResponseEntity.ok().body(bookService.getAllBook());
     }
 
     @GetMapping("{id}")

@@ -28,6 +28,7 @@ public class User {
     @Column (name = "email", nullable = false)
     private String email;
 
+    @JsonIgnore //loi parse nen tam che lai
     @Column (name = "ngay_tao", nullable = false)
     private LocalDateTime createdAt;
 

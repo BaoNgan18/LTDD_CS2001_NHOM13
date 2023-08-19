@@ -7,15 +7,23 @@ public class Book {
     private Long id;
     private String nameBook;
     private List<Genre> listGenre;
-
     private String coverImg;
     private User user;
-
+    private String describe;
+    private String content;
     private List<User> listUserPressingLove;
 
-    private String describe;
+//    @Transient
+//    private MultipartFile file;
 
-    private String content;
+    public Book(String nameBook, User author, String describe, String content, String coverImg, List<Genre> listGenre){
+        this.setNameBook(nameBook);
+        this.setUser(author);
+        this.setDescribe(describe);
+        this.setContent(content);
+        this.setCoverImg(coverImg);
+        this.setListGenre(listGenre);
+    }
 
     public Long getId() {
         return id;
@@ -24,7 +32,6 @@ public class Book {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getNameBook() {
         return nameBook;
@@ -58,14 +65,6 @@ public class Book {
         this.user = user;
     }
 
-    public List<User> getListUserPressingLove() {
-        return listUserPressingLove;
-    }
-
-    public void setListUserPressingLove(List<User> listUserPressingLove) {
-        this.listUserPressingLove = listUserPressingLove;
-    }
-
     public String getDescribe() {
         return describe;
     }
@@ -80,6 +79,14 @@ public class Book {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public List<User> getListUserPressingLove() {
+        return listUserPressingLove;
+    }
+
+    public void setListUserPressingLove(List<User> listUserPressingLove) {
+        this.listUserPressingLove = listUserPressingLove;
     }
 }
 
