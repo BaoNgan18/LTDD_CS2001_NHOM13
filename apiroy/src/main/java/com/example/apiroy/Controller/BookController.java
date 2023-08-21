@@ -2,6 +2,7 @@ package com.example.apiroy.Controller;
 
 
 import com.example.apiroy.Model.Book;
+import com.example.apiroy.Model.Chapter;
 import com.example.apiroy.Service.BookService;
 import com.example.apiroy.Service.CoverImgService;
 import jakarta.validation.Valid;
@@ -54,6 +55,11 @@ public class BookController {
     public Map<String, Boolean> deleteBook(@PathVariable(value = "id") Long id)
             throws Exception {
         return bookService.deleteBook(id);
+    }
+
+    @GetMapping("{id}/chuong/")
+    public List<Chapter> getAllChaptersByBook(@PathVariable(value = "id") Long id) {
+        return bookService.getAllChaptersByBook(id);
     }
 
     @PostMapping("{id}/dang-anh")

@@ -1,6 +1,7 @@
 package com.example.apiroy.Service;
 
 import com.example.apiroy.Model.Book;
+import com.example.apiroy.Model.Chapter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -13,6 +14,8 @@ public interface BookService {
 
     Book getBookByID(Long id) throws  Exception;
 
+    List<Chapter> getAllChaptersByBook(Long id);
+
     Book createBook(Book book);
 
     Book updateBook(Long id, Book bookDetails) throws Exception;
@@ -21,4 +24,5 @@ public interface BookService {
 
     Book postBook(Book book, Long userId);
     Book postCoverImg(MultipartFile file, Long id) throws Exception;
+
 }

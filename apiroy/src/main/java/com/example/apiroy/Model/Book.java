@@ -42,8 +42,10 @@ public class Book {
     @Column(name = "mo_ta_truyen", length = 5000)
     private String describe;
 
-    @Column(name = "noi_dung_chuong", length = 50000)
-    private String content;
+
+    @OneToMany(mappedBy = "book")
+    List<Chapter> listChapter;
+
 
     @JsonIgnore
     @ManyToMany
@@ -54,15 +56,14 @@ public class Book {
     )
     private List<User> listUserPressingLove;
 
-//    @Transient
-//    private MultipartFile file;
 
-    public Book(String nameBook, User author, String describe, String content, String coverImg, List<Genre> listGenre){
+
+    public Book(String nameBook, User author, String describe, String coverImg, List<Genre> listGenre, List<Chapter> listChapter){
         this.setNameBook(nameBook);
         this.setUser(author);
         this.setDescribe(describe);
-        this.setContent(content);
         this.setCoverImg(coverImg);
         this.setListGenre(listGenre);
+        this.setListChapter(listChapter);
     }
 }

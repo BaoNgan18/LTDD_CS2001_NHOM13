@@ -1,6 +1,7 @@
 package com.example.apiroy.Service.Impl;
 
 import com.example.apiroy.Model.Book;
+import com.example.apiroy.Model.Chapter;
 import com.example.apiroy.Model.User;
 import com.example.apiroy.Repository.BookRepository;
 import com.example.apiroy.Repository.GenreRepository;
@@ -15,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -43,6 +41,11 @@ public class BookServiceImpl implements BookService {
     public Book getBookByID(Long id) throws  Exception{
         Book book = bookRepository.findById(id).orElseThrow(() -> new Exception("Truyện này không tồn tại: " + id));
         return book;
+    }
+
+    @Override
+    public List<Chapter> getAllChaptersByBook(Long id) {
+        return bookRepository.getAllChaptersByBook(id);
     }
 
     @Override
@@ -85,14 +88,15 @@ public class BookServiceImpl implements BookService {
         if (!Objects.equals(book.getDescribe(), bookDetails.getDescribe())) {
             book.setDescribe(bookDetails.getDescribe());
         }
-        // So sánh và cập nhật nội dung chương nếu có thay đổi
-        if (!Objects.equals(book.getContent(), bookDetails.getContent())) {
-            book.setContent(bookDetails.getContent());
-        }
+
 //        // So sánh và cập nhật tên tác giả truyện nếu có thay đổi
 //        if (!Objects.equals(book.getUser(), bookDetails.getUser())) {
 //            book.setUser(bookDetails.getUser());
 //        }
+        // So sánh và cập nhật danh sách chapter nếu có thay đổi
+        if (!Objects.equals(book.getListChapter(), bookDetails.getListChapter())) {
+            book.setListChapter(bookDetails.getListChapter());
+        }
         // So sánh và cập nhật thể loại nếu có thay đổi
         if (!Objects.equals(book.getListGenre(), bookDetails.getListGenre())) {
             book.setListGenre(bookDetails.getListGenre());

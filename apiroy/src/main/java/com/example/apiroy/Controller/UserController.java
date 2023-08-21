@@ -62,10 +62,7 @@ public class UserController {
         return userService.getBookByUser(id);
     }
 
-//    @PostMapping("{id}/yeu_thich")
-//    public Book addBookInFavorites(@Valid @RequestBody Book book, @PathVariable(value = "id") Long userId) {
-//        return userService.addBookInFavorites(book, userId);
-//    }
+
 
     @PostMapping("/{nguoidung_id}/yeuthich/{truyen_id}")
     public ResponseEntity<String> addBookInFavorites(
