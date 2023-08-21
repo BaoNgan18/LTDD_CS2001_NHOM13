@@ -42,7 +42,7 @@ public class Book {
     @Column(name = "mo_ta_truyen", length = 5000)
     private String describe;
 
-
+//    @JsonIgnore
     @OneToMany(mappedBy = "book")
     List<Chapter> listChapter;
 

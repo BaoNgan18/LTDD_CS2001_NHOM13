@@ -13,6 +13,8 @@ public class Book {
     private String content;
     private List<User> listUserPressingLove;
 
+    private List<Chapter> listChapter;
+
 //    @Transient
 //    private MultipartFile file;
 
@@ -87,6 +89,14 @@ public class Book {
 
     public void setListUserPressingLove(List<User> listUserPressingLove) {
         this.listUserPressingLove = listUserPressingLove;
+    }
+
+    public List<Chapter> getListChapter() {
+        return listChapter;
+    }
+
+    public void setListChapter(List<Chapter> listChapter) {
+        this.listChapter = listChapter;
     }
 }
 

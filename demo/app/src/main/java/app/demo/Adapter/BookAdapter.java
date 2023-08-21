@@ -40,7 +40,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                 .load(coverImgUrl)
                 .into(holder.coverImg);
 
-
         StringBuilder sb = new StringBuilder();
         bookList.get(position).getListGenre().forEach(t -> sb.append(t.getNameOfGenre()+", "));
         if (sb.length() > 0) {
