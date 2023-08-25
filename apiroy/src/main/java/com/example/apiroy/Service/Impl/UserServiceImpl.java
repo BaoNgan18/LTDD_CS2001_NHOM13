@@ -89,8 +89,8 @@ public class UserServiceImpl implements UserService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new Exception("Book not found: " + bookId));
         if(!user.getListFavoriteBook().contains(book)){
-            System.out.println("[DEBUG] - User: " + user);
-            System.out.println("[DEBUG] - Book: " + book);
+//            System.out.println("[DEBUG] - User: " + user);
+//            System.out.println("[DEBUG] - Book: " + book);
             user.getListFavoriteBook().add(book);
             book.getListUserPressingLove().add(user);
             userRepository.save(user);

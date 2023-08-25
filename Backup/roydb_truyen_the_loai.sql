@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS `truyen_the_loai`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `truyen_the_loai` (
-  `theloai_id` bigint NOT NULL,
   `truyen_id` bigint NOT NULL,
+  `theloai_id` bigint NOT NULL,
   KEY `FK778ei5wrsfr858wjicjhfwkvh` (`theloai_id`),
   KEY `FK6xluvnsg3k6i0w62st3t31myo` (`truyen_id`),
   CONSTRAINT `FK6xluvnsg3k6i0w62st3t31myo` FOREIGN KEY (`truyen_id`) REFERENCES `truyen` (`id`),
@@ -38,7 +38,7 @@ CREATE TABLE `truyen_the_loai` (
 
 LOCK TABLES `truyen_the_loai` WRITE;
 /*!40000 ALTER TABLE `truyen_the_loai` DISABLE KEYS */;
-INSERT INTO `truyen_the_loai` VALUES (1,1),(2,1),(3,1),(1,2),(2,2),(1,3),(2,3),(1,4),(2,4),(12,16),(13,16),(14,16),(11,17),(5,17),(14,17),(15,19),(6,19),(13,19),(3,21),(5,21),(15,21),(17,21),(3,20),(5,20),(15,20),(17,20);
+INSERT INTO `truyen_the_loai` VALUES (1,15),(1,19),(1,10),(2,3),(2,12),(2,10),(2,16),(2,13);
 /*!40000 ALTER TABLE `truyen_the_loai` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-18 16:03:35
+-- Dump completed on 2023-08-25 12:30:01

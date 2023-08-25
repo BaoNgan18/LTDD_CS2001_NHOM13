@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS `truyen_yeu_thich_nguoi_dung`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `truyen_yeu_thich_nguoi_dung` (
-  `nguoidung_id` bigint NOT NULL,
   `truyen_id` bigint NOT NULL,
+  `nguoidung_id` bigint NOT NULL,
   KEY `FKg1wg26fgyneohspi39g2ssrhf` (`nguoidung_id`),
   KEY `FKkyme8l1gno0hjxg5oi408o8mj` (`truyen_id`),
   CONSTRAINT `FKg1wg26fgyneohspi39g2ssrhf` FOREIGN KEY (`nguoidung_id`) REFERENCES `nguoi_dung` (`id`),
@@ -38,7 +38,7 @@ CREATE TABLE `truyen_yeu_thich_nguoi_dung` (
 
 LOCK TABLES `truyen_yeu_thich_nguoi_dung` WRITE;
 /*!40000 ALTER TABLE `truyen_yeu_thich_nguoi_dung` DISABLE KEYS */;
-INSERT INTO `truyen_yeu_thich_nguoi_dung` VALUES (6,19),(2,16),(6,20),(2,20),(6,21),(2,21);
+INSERT INTO `truyen_yeu_thich_nguoi_dung` VALUES (2,1),(2,6),(1,6),(1,1),(1,5);
 /*!40000 ALTER TABLE `truyen_yeu_thich_nguoi_dung` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-18 16:03:35
+-- Dump completed on 2023-08-25 12:30:01
