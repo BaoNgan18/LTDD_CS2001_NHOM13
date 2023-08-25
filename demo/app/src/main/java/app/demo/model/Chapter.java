@@ -1,11 +1,10 @@
 package app.demo.model;
 
-public class Chapter {
+import java.io.Serializable;
+
+public class Chapter implements Serializable {
     private Long id;
-
     private Book book;
-
-
     private String chapterName;
 
     private String content;

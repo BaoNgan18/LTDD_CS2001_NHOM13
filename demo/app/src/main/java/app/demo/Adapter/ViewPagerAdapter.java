@@ -1,5 +1,7 @@
 package app.demo.Adapter;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -31,6 +33,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                 return new NotificationFragment();
 
             case 3:
+
                 return new AccountFragment();
 
             default:

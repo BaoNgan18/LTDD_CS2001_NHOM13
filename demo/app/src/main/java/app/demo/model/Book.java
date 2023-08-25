@@ -1,9 +1,10 @@
 package app.demo.model;
 
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Book {
+public class Book implements Serializable {
     private Long id;
     private String nameBook;
     private List<Genre> listGenre;

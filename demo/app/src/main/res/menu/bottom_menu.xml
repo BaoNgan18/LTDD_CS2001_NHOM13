@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_home"
-        android:title="Home"
+        android:title="Trang chủ"
         android:icon="@drawable/ic_home"/>
     <item
         android:id="@+id/menu_lib"
@@ -14,6 +14,6 @@
         android:icon="@drawable/ic_notifications"/>
     <item
         android:id="@+id/menu_account"
-        android:title="Home"
+        android:title="Tài khoản"
         android:icon="@drawable/ic_account"/>
 </menu>

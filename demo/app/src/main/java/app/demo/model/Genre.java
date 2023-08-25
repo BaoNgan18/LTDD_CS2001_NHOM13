@@ -1,8 +1,9 @@
 package app.demo.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Genre {
+public class Genre implements Serializable {
     private Long id;
     private String nameOfGenre;
 

@@ -1,16 +1,20 @@
 package app.demo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,9 +34,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView rcvBook;
-    List<Book> bookList;
-
     private ViewPager2 mViewPager;
     private BottomNavigationView mBotNav;
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //thiết lập các thanh top bar và bottom bar
         mViewPager = findViewById(R.id.view_pager);
         mBotNav = findViewById(R.id.bottom_nav);
         mToolBar = findViewById(R.id.top_nav);
@@ -96,10 +98,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //
-        rcvBook = findViewById(R.id.rcv_book);
-        rcvBook.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        bookList = new ArrayList<>();
-        CallAPI();
+//        rcvBook = findViewById(R.id.rcv_book);
+//        rcvBook.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+//        bookList = new ArrayList<>();
+//        CallAPI();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
     }
 
     @Override
@@ -108,20 +116,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void CallAPI() {
-        APIService.API_SERVICE.getListBook().enqueue(new Callback<List<Book>>() {
-            @Override
-            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-                bookList.addAll(response.body());
-                BookAdapter bookAdapter = new BookAdapter(bookList);
-                rcvBook.setAdapter(bookAdapter);
-                Toast.makeText(MainActivity.this, "Thanh cong", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<List<Book>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "That bai", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    public void CallAPI() {
+//        APIService.API_SERVICE.getListBook().enqueue(new Callback<List<Book>>() {
+//            @Override
+//            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+//                bookList.addAll(response.body());
+//                BookAdapter bookAdapter = new BookAdapter(bookList);
+//                rcvBook.setAdapter(bookAdapter);
+//                Toast.makeText(MainActivity.this, "Thanh cong", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Book>> call, Throwable t) {
+//                Toast.makeText(MainActivity.this, "That bai", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 }

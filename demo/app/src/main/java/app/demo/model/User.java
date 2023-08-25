@@ -1,9 +1,10 @@
 package app.demo.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
     private long id;
 
     private String userName;

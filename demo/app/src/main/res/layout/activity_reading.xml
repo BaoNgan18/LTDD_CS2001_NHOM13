@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/img_cover"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:src="@drawable/r"
+                android:background="@color/gray"/>
+            <TextView
+                android:id="@+id/tv_name_chapter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Tên chương"
+                android:textAlignment="center" />
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="nội dung chương"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

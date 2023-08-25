@@ -10,14 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import app.demo.R;
 import app.demo.MainActivity;
 
 public class LoginFragment extends Fragment {
-
-
-
+    EditText edtUserName, edtPassWord;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +27,14 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
 
-        Button btnLogin = (Button) rootView.findViewById(R.id.btn_login);
-        Button btnRegister = (Button) rootView.findViewById(R.id.btn_register);
+        Button btnLogin = (Button) view.findViewById(R.id.btn_login);
+        Button btnRegister = (Button) view.findViewById(R.id.btn_register);
+
+        edtUserName = view.findViewById(R.id.edt_userName);
+        edtPassWord = view.findViewById(R.id.edt_password);
 
 
 
@@ -54,6 +57,6 @@ public class LoginFragment extends Fragment {
         });
 
 
-        return rootView;
+        return view;
     }
 }
