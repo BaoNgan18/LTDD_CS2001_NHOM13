@@ -20,7 +20,7 @@ import retrofit2.http.Query;
 public interface APIService {
     Gson gson = new GsonBuilder().create();
     APIService API_SERVICE = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.160:8080/api/")
+            .baseUrl("http://192.168.1.6:8080/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(APIService.class);
 
@@ -36,11 +36,17 @@ public interface APIService {
     @GET("truyen/{bookID}/chuong/")
     Call<List<Chapter>> getAllChaptersByBook(@Path("bookID") long bookID);
 
-    @GET("user")
-    Call<User> getUserById(@Query("userID") long userID);
+    @GET("nguoidung")
+    Call<List<User>> getAllUser();
 
     @GET("nguoidung/{id}/truyenyeuthich")
     Call<List<Book>> getListFavoriteBookByUser(@Path("userID") long userID);
     @GET("nguoidung/{id}/truyen")
     Call<List<Book>> getBookByUser(@Path("userID") long userID);
+
+    @POST("/{nguoidung_id}/yeuthich/{truyen_id}")
+    Call<Book> addBookInFavorites(@Path("userID") long userID, @Path("bookID") long bookID);
+
+    @POST()
+    Call<User> createUser(User user);
 }

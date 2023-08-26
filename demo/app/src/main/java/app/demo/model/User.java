@@ -1,28 +1,30 @@
 package app.demo.model;
 
+import android.text.TextUtils;
+import android.util.Patterns;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class User implements Serializable {
+    private static long lastCreate = 0;
+
+    public User(String password, String email) {
+        this.id = lastCreate++;
+        this.password = password;
+        this.email = email;
+    }
+
     private long id;
-
     private String userName;
-
-
     private String password;
-
-
     private String email;
-
-
     private LocalDateTime createdAt;
-
-
     private List<Book> listFavoriteBook;
-
-
     private List<Book> listBook;
+
+
 
     public long getId() {
         return id;
@@ -78,5 +80,23 @@ public class User implements Serializable {
 
     public void setListBook(List<Book> listBook) {
         this.listBook = listBook;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    public boolean isValidEmail(){
+        return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public  boolean isValidPassword(){
+        return !TextUtils.isEmpty(password) && password.length()>=8;
     }
 }

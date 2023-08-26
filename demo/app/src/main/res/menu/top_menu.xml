@@ -9,4 +9,9 @@
         app:showAsAction="ifRoom|collapseActionView"
         android:iconTint="@color/color_nav"
         />
+    <item
+        android:id="@+id/img_user_avatar"
+        android:icon="@drawable/r"
+        android:title=""
+        app:showAsAction="always"/>
 </menu>

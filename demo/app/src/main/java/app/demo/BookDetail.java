@@ -122,11 +122,11 @@ public class BookDetail extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Đã thêm truyện vào danh sách", Toast.LENGTH_LONG).show();
             }
         });
-//        rcvBook = findViewById(R.id.rcv_book);
-//        LinearLayoutManager linear = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-//        rcvBook.setLayoutManager(linear);
-//        listBook = new ArrayList<>();
-//        CallAPI();
+        rcvBook = findViewById(R.id.rcv_book);
+        LinearLayoutManager linear = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        rcvBook.setLayoutManager(linear);
+        listBook = new ArrayList<>();
+        CallAPI();
 
         rcvChapter = findViewById(R.id.rcv_chapter);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -154,20 +154,20 @@ public class BookDetail extends AppCompatActivity {
             }
         });
     }
-//    public void CallAPI() {
-//        APIService.API_SERVICE.getListBook().enqueue(new Callback<List<Book>>() {
-//            @Override
-//            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-//                listBook.addAll(response.body());
-//                BookAdapter bookAdapter = new BookAdapter(listBook);
-//                rcvBook.setAdapter(bookAdapter);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Book>> call, Throwable t) {
-//                Log.d("Error", t.getMessage());
-//                Toast.makeText(BookDetail.this, "That bai", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+    public void CallAPI() {
+        APIService.API_SERVICE.getListBook().enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                listBook.addAll(response.body());
+                BookAdapter bookAdapter = new BookAdapter(listBook);
+                rcvBook.setAdapter(bookAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
+                Log.d("Error", t.getMessage());
+                Toast.makeText(BookDetail.this, "That bai", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
