@@ -16,8 +16,6 @@ public class Book implements Serializable {
 
     private List<Chapter> listChapter;
 
-//    @Transient
-//    private MultipartFile file;
 
     public Book(String nameBook, User author, String describe, String content, String coverImg, List<Genre> listGenre){
         this.setNameBook(nameBook);

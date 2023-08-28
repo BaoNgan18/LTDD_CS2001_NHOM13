@@ -20,7 +20,11 @@ import retrofit2.http.Query;
 public interface APIService {
     Gson gson = new GsonBuilder().create();
     APIService API_SERVICE = new Retrofit.Builder()
+<<<<<<< HEAD
             .baseUrl("http://192.168.1.6:8080/api/")
+=======
+            .baseUrl("http://192.168.0.9:8080/api/")
+>>>>>>> 6e0a16044f6f335294f5fc8fcae41541638b1ad1
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(APIService.class);
 

@@ -28,5 +28,9 @@ public interface UserService {
 
     Book removeBookFromFavorites(Long userId,Long bookId) throws Exception;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6e0a16044f6f335294f5fc8fcae41541638b1ad1
     User findUserByEmail(String email);
 }
