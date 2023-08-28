@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,18 +16,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.demo.BookDetail;
 import app.demo.R;
 import app.demo.model.Book;
 
-public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
+public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> implements Filterable {
     public BookAdapter(List<Book> bookList) {
         this.listBook = bookList;
+        tempList = bookList;
     }
 
-    List<Book> listBook;
+    List<Book> listBook, tempList;
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,7 +71,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     @Override
     public int getItemCount() {
         if(listBook != null)
-            return listBook.size();;
+            return listBook.size();
         return 0;
     }
 
@@ -80,8 +84,37 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             listGenre = itemView.findViewById(R.id.tv_genre);
             userName = itemView.findViewById(R.id.tv_nameOfAuthor);
             coverImg = itemView.findViewById(R.id.iv_coverImg);
-
         }
+    }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String strSearch = charSequence.toString();
+                if(strSearch.isEmpty()){
+                    listBook = tempList;
+                } else {
+                    List<Book> list = new ArrayList<>();
+                    for(Book book: tempList){
+                        if(book.getNameBook().toLowerCase().contains(strSearch.toLowerCase()))
+                            list.add(book);
+                    }
+                    listBook = list;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = listBook;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                listBook = (List<Book>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

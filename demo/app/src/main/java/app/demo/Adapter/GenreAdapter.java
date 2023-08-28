@@ -23,7 +23,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHolder> {
-    private List<Genre> genres;
+    private final List<Genre> genres;
+    List<Book> listBook;
 
     public GenreAdapter(List<Genre> genres) {
         this.genres = genres;
@@ -40,7 +41,14 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
     public void onBindViewHolder(@NonNull GenreViewHolder holder, int position) {
 
         Genre genre = genres.get(position);
+        if(genre.getListBook().isEmpty())
+        {
+            return;
+        }
         holder.tvGenreName.setText(genre.getNameOfGenre());
+        getListBook(genre.getId());
+        BookAdapter bookAdapter = new BookAdapter(listBook);
+        holder.rcvBook.setAdapter(bookAdapter);
     }
 
     @Override
@@ -52,10 +60,25 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
 
     public static class GenreViewHolder extends  RecyclerView.ViewHolder{
         TextView tvGenreName;
+        RecyclerView rcvBook;
         public GenreViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tvGenreName = itemView.findViewById(R.id.tv_genre_name);
+            rcvBook = itemView.findViewById(R.id.rcv_book);
         }
+    }
+
+    private void getListBook(long id) {
+        APIService.API_SERVICE.getBookByGenre(id).enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                listBook.addAll(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
+                return;
+            }
+        });
     }
 }

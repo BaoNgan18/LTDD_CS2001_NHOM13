@@ -39,14 +39,17 @@ public interface APIService {
     @GET("nguoidung")
     Call<List<User>> getAllUser();
 
-    @GET("nguoidung/{id}/truyenyeuthich")
+    @GET("nguoidung/{id}/truyenyeuthich/")
     Call<List<Book>> getListFavoriteBookByUser(@Path("userID") long userID);
-    @GET("nguoidung/{id}/truyen")
+    @GET("nguoidung/{id}/truyen/")
     Call<List<Book>> getBookByUser(@Path("userID") long userID);
 
-    @POST("/{nguoidung_id}/yeuthich/{truyen_id}")
+    @POST("nguoidung/{nguoidung_id}/yeuthich/{truyen_id}")
     Call<Book> addBookInFavorites(@Path("userID") long userID, @Path("bookID") long bookID);
 
     @POST()
     Call<User> createUser(User user);
+
+    @GET("nguoidung/find-by-email/{email}")
+    Call<User> findUserByEmail(@Path("email") String email);
 }

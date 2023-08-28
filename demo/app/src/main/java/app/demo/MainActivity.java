@@ -3,31 +3,36 @@ package app.demo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import app.demo.API.APIService;
 import app.demo.Adapter.BookAdapter;
 import app.demo.Adapter.ViewPagerAdapter;
+import app.demo.Fragment.SearchFragment;
 import app.demo.model.Book;
+import app.demo.model.Genre;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,8 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 mViewPager;
     private BottomNavigationView mBotNav;
-
     private Toolbar mToolBar;
+    SearchView searchView;
+    List<Book> listBook;
+    RecyclerView rcvResult;
+    BookAdapter bookAdapter;
+    View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setIcon(R.drawable.r);
 
+        rcvResult = findViewById(R.id.rcv_search);
+        rcvResult.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        listBook = new ArrayList<>();
+
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         mViewPager.setAdapter(adapter);
@@ -64,10 +77,8 @@ public class MainActivity extends AppCompatActivity {
                     mViewPager.setCurrentItem(0);
                 } else if (id == R.id.menu_lib) {
                     mViewPager.setCurrentItem(1);
-                } else if (id == R.id.menu_noti) {
-                    mViewPager.setCurrentItem(2);
                 } else if (id == R.id.menu_account) {
-                    mViewPager.setCurrentItem(3);
+                    mViewPager.setCurrentItem(2);
                 }
                 return true;
             }
@@ -85,9 +96,6 @@ public class MainActivity extends AppCompatActivity {
                         mBotNav.getMenu().findItem(R.id.menu_lib).setChecked(true);
                         break;
                     case 2:
-                        mBotNav.getMenu().findItem(R.id.menu_noti).setChecked(true);
-                        break;
-                    case 3:
                         mBotNav.getMenu().findItem(R.id.menu_account).setChecked(true);
                         break;
                     default:
@@ -113,23 +121,47 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        rcvResult = findViewById(R.id.rcv_search);
+        view = findViewById(R.id.view);
+//        rcvResult.setVisibility(View.GONE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                getAllBook();
+                view.setVisibility(View.VISIBLE);
+                bookAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                getAllBook();
+                view.setVisibility(View.VISIBLE);
+                bookAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return true;
     }
 
-//    public void CallAPI() {
-//        APIService.API_SERVICE.getListBook().enqueue(new Callback<List<Book>>() {
-//            @Override
-//            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-//                bookList.addAll(response.body());
-//                BookAdapter bookAdapter = new BookAdapter(bookList);
-//                rcvBook.setAdapter(bookAdapter);
-//                Toast.makeText(MainActivity.this, "Thanh cong", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Book>> call, Throwable t) {
-//                Toast.makeText(MainActivity.this, "That bai", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+    public void getAllBook() {
+        APIService.API_SERVICE.getListBook().enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                listBook.addAll(response.body());
+                bookAdapter = new BookAdapter(listBook);
+                rcvResult.setAdapter(bookAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

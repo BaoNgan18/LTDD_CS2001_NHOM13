@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +34,6 @@ public class LoginFragment extends Fragment {
     TextView tvMesage;
     List<User> listUser;
 
-//    SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE);
-//    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,54 +45,60 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-
-        Button btnLogin = (Button) view.findViewById(R.id.btn_login);
-        Button btnRegister = (Button) view.findViewById(R.id.btn_register);
-
-        edtEmail = view.findViewById(R.id.edt_email);
-        edtPassWord = view.findViewById(R.id.edt_password);
-        tvMesage = view.findViewById(R.id.tv_message);
-        listUser = new ArrayList<>();
-        getAllUser();
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            Button btnLogin = (Button) view.findViewById(R.id.btn_login);
+            Button btnRegister = (Button) view.findViewById(R.id.btn_register);
 
-                String strUserName = edtEmail.getText().toString().trim();
-                String strPassword = edtPassWord.getText().toString().trim();
+            edtEmail = view.findViewById(R.id.edt_email);
+            edtPassWord = view.findViewById(R.id.edt_password);
+            tvMesage = view.findViewById(R.id.tv_message);
+            listUser = new ArrayList<>();
+            getAllUser();
 
-                boolean isUser = false;
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                for (User user: listUser){
-                    if(strUserName.equals(user.getEmail()) && strPassword.equals(user.getPassword())){
-                        isUser = true;
-                        break;
+                    String strUserName = edtEmail.getText().toString().trim();
+                    String strPassword = edtPassWord.getText().toString().trim();
+
+                    boolean isUser = false;
+
+                    for (User user: listUser){
+                        if(strUserName.equals(user.getEmail()) && strPassword.equals(user.getPassword())){
+                            isUser = true;
+//                        Intent intent = new Intent(getContext(), AccountFragment.class);
+//                        intent.putExtra("user", user);
+//                        getContext().startActivity(intent);
+                            Gson gson = new Gson();
+                            String userJson = gson.toJson(user);
+                            editor.putString("user", userJson.toString());
+                            editor.putBoolean("isLogged", true);
+                            editor.apply();
+                            break;
+                        }
+                    }
+
+                    if(isUser){
+                        Toast.makeText(getView().getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                    } else
+                    {
+                        tvMesage.setVisibility(View.VISIBLE);
                     }
                 }
-
-                if(isUser){
-
-
-                    Toast.makeText(getView().getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
-                } else
-                {
-                    tvMesage.setVisibility(View.VISIBLE);
+            });
+            btnRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentTransaction frmTransaction = getChildFragmentManager().beginTransaction();
+                    frmTransaction.replace(R.id.frm_login, new RegisterFragment()).commit();
                 }
-            }
-        });
-
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction frmTransaction = getChildFragmentManager().beginTransaction();
-                frmTransaction.replace(R.id.frm_login, new RegisterFragment()).commit();
-            }
-        });
-
+            });
         return view;
     }
 

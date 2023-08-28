@@ -88,4 +88,14 @@ public class UserController {
         }
     }
 
+    @GetMapping("/find-by-email/{email}")
+    public ResponseEntity<?> findUserByEmail(@PathVariable(value = "email") String email) {
+        User user = userService.findUserByEmail(email);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
 }

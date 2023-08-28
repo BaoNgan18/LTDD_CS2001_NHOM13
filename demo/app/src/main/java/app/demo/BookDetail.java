@@ -87,6 +87,7 @@ public class BookDetail extends AppCompatActivity {
             public void onClick(View view) {
                 if(!btnFav.isSelected()){
                     btnFav.setSelected(true);
+
                     Toast.makeText(getApplicationContext(), "Đã thêm truyện vào danh sách yêu thích", Toast.LENGTH_LONG).show();
                     btnFav.setImageResource(R.drawable.ic_favorite);
                 } else{
@@ -109,15 +110,6 @@ public class BookDetail extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                Intent intent = new Intent(view.getContext(), LibraryFragment.class);
-//
-//                Bundle extras = new Bundle();
-//                extras.putInt("ID", book.getResourceID());
-//                extras.putString("Title", book.getTitle());
-//                intent.putExtras(extras);
-//
-//                startActivity(intent);
 
                 Toast.makeText(getApplicationContext(), "Đã thêm truyện vào danh sách", Toast.LENGTH_LONG).show();
             }

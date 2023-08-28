@@ -31,6 +31,7 @@ public class RegisterFragment extends Fragment {
     EditText edtEmail, edtUserName, edtPassword;
     List<User> listUser;
     TextView tvMessage;
+    User user;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +60,6 @@ public class RegisterFragment extends Fragment {
         edtPassword = rootView.findViewById(R.id.edt_password);
         tvMessage = rootView.findViewById(R.id.tv_message);
 
-        listUser = new ArrayList<>();
-        getAllUser();
-
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,22 +67,16 @@ public class RegisterFragment extends Fragment {
                 String strUserName = edtUserName.toString();
                 String strPassword = edtPassword.toString();
 
-                boolean isUser = false;
-                for (User user: listUser){
-                    if(strEmail.equals(user.getEmail())){
-                        isUser = true;
-                        break;
-                    }
-                }
-
-                if(isUser){
+                findUserByEmail(strEmail);
+                if(user != null){
                     tvMessage.setVisibility(View.VISIBLE);
-                    tvMessage.setText("Email đã tồn tại");;
+                    tvMessage.setText("Email đã tồn tại");
                 } else
                 {
                     Toast.makeText(getView().getContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity(), LoginFragment.class);
-                    startActivity(intent);
+                    createUser();
+                    FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.frm_register, new LoginFragment()).commit();
                 }
             }
         });
@@ -95,16 +87,46 @@ public class RegisterFragment extends Fragment {
         return rootView;
 
     }
-    private void getAllUser() {
-        APIService.API_SERVICE.getAllUser().enqueue(new Callback<List<User>>() {
+
+    private void createUser() {
+        APIService.API_SERVICE.createUser(user).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                listUser.addAll(response.body());
+            public void onResponse(Call<User> call, Response<User> response) {
+
             }
+
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(getView().getContext(), "That bai", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<User> call, Throwable t) {
+
             }
         });
     }
+
+    private void findUserByEmail(String email) {
+        APIService.API_SERVICE.findUserByEmail(email).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                user = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(getContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+//    private void getAllUser() {
+//        APIService.API_SERVICE.getAllUser().enqueue(new Callback<List<User>>() {
+//            @Override
+//            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+//                listUser.addAll(response.body());
+//            }
+//            @Override
+//            public void onFailure(Call<List<User>> call, Throwable t) {
+//                Toast.makeText(getView().getContext(), "That bai", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+
+
 }

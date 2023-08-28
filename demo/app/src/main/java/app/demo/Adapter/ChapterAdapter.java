@@ -21,7 +21,7 @@ import app.demo.model.Chapter;
 
 public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterViewHolder> {
 
-    private List<Chapter> chapters;
+    private final List<Chapter> chapters;
     public ChapterAdapter(List<Chapter> listChapter){
         chapters = listChapter;
     }
@@ -43,7 +43,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), Reading.class);
-                Log.d("Book", chapter.toString());
+                Log.d("Chapter", chapter.toString());
                 intent.putExtra("chapter", chapter);
                 view.getContext().startActivity(intent);
             }
@@ -56,7 +56,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
     }
 
     public class ChapterViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvNameChapter;
+        private final TextView tvNameChapter;
 
         public ChapterViewHolder(@NonNull View itemView) {
             super(itemView);
