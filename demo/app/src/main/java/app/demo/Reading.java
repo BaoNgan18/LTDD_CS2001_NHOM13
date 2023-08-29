@@ -3,6 +3,7 @@ package app.demo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.ImageFilterView;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,7 @@ import java.util.List;
 
 import app.demo.API.APIService;
 import app.demo.Adapter.ReadingAdapter;
+import app.demo.model.Book;
 import app.demo.model.Chapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +35,7 @@ public class Reading extends AppCompatActivity {
     ImageView imgCover;
     RecyclerView rcvReading;
     List<Chapter> listChapter;
+    NestedScrollView nsvReading;
     ScrollView scrollView;
     Chapter chapter;
     @Override
@@ -51,7 +54,8 @@ public class Reading extends AppCompatActivity {
         tvNameChapter = findViewById(R.id.tv_name_chapter);
         tvContent = findViewById(R.id.content);
         imgCover = findViewById(R.id.img_cover);
-        scrollView = findViewById(R.id.scrollView);
+//        scrollView = findViewById(R.id.scrollView);
+        nsvReading = findViewById(R.id.nsv_reading);
 
         tvNameChapter.setText(chapter.getChapterName());
         tvContent.setText(chapter.getContent());
@@ -81,4 +85,13 @@ public class Reading extends AppCompatActivity {
 //            }
 //        });
 //    }
+
+    public static int findBookIndexById(List<Chapter> itemList, int targetId) {
+        for (int i = 0; i < itemList.size(); i++) {
+            if (itemList.get(i).getId() == targetId) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

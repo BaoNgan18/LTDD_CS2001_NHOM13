@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll">
+
+            <!-- Your content here -->
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <androidx.constraintlayout.utils.widget.ImageFilterView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <ImageView
             android:id="@+id/img_cover"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -29,5 +44,32 @@
             android:layout_marginTop="6dp"
             android:layout_gravity="center_horizontal"
             />
-    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/bottomButtons"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="16dp"-->
+<!--        android:background="@android:color/darker_gray"-->
+<!--        app:layout_anchor="@id/appBarLayout"-->
+<!--        app:layout_anchorGravity="bottom"-->
+<!--        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">-->
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/btn_previous"-->
+<!--            android:drawableLeft="@drawable/ic_previous"-->
+<!--            android:backgroundTint="@color/blue_2"/>-->
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/btn_next"-->
+<!--            android:drawableLeft="@drawable/ic_next"-->
+<!--            android:backgroundTint="@color/blue_2"/>-->
+
+<!--    </LinearLayout>-->
 </LinearLayout>

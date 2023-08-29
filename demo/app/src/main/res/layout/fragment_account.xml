@@ -1,61 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment.AccountFragment"
     android:orientation="vertical"
     android:id="@+id/frm_account">
-
-    <ImageButton
-        android:id="@+id/btn_logout"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_logout"
-        android:layout_marginLeft="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_gravity="right"/>
-
-
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_user_avatar"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/r"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="-30dp" />
-    <TextView
-        android:id="@+id/tv_user_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tên người dùng"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/black"/>
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_gravity="center"
-        android:background="@color/gray" />
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--&lt;!&ndash;        android:background="@color/gray">&ndash;&gt;-->
-<!--        <LinearLayout-->
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageButton
+            android:id="@+id/btn_logout"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_logout"
+            android:layout_marginLeft="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_gravity="right"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_user_avatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/r"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-30dp" />
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên người dùng"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@color/gray" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_title_fav"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Danh sách đọc yêu thích"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:textColor="@color/black"/>-->
+<!--        <androidx.recyclerview.widget.RecyclerView-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical">-->
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/rcv_upload_book"/>-->
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/rcv_fav_book"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="200dp"/>-->
-<!--        </LinearLayout>-->
-<!--    </ScrollView>-->
+<!--            android:id="@+id/rcv_upload_book"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/tv_title_up"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Danh sách truyện đã đăng"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:textColor="@color/black"/>-->
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rcv_fav_book"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="200dp"/>-->
+    </LinearLayout>
 
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

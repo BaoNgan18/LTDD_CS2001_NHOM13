@@ -32,11 +32,14 @@ public class RegisterFragment extends Fragment {
     List<User> listUser;
     TextView tvMessage;
     User user;
+    String strEmail, strUserName, strPassword;
+    Boolean isUser = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,16 +48,6 @@ public class RegisterFragment extends Fragment {
 
         Button btnLogin = (Button) rootView.findViewById(R.id.btn_login);
         Button btnRegister = (Button) rootView.findViewById(R.id.btn_register);
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frm_register, new LoginFragment()).commit();
-            }
-        });
-
-
         edtEmail = rootView.findViewById(R.id.edt_email);
         edtUserName = rootView.findViewById(R.id.edt_user_name);
         edtPassword = rootView.findViewById(R.id.edt_password);
@@ -63,70 +56,64 @@ public class RegisterFragment extends Fragment {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String strEmail = edtEmail.toString();
-                String strUserName = edtUserName.toString();
-                String strPassword = edtPassword.toString();
+                strEmail = edtEmail.getText().toString();
+                strUserName = edtUserName.getText().toString();
+                strPassword = edtPassword.getText().toString();
 
                 findUserByEmail(strEmail);
-                if(user != null){
-                    tvMessage.setVisibility(View.VISIBLE);
-                    tvMessage.setText("Email đã tồn tại");
-                } else
-                {
-                    Toast.makeText(getView().getContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                    createUser();
-                    FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.frm_register, new LoginFragment()).commit();
-                }
+
+            }
+
+            private void findUserByEmail(String strEmail) {
+                APIService.API_SERVICE.findUserByEmail(strEmail).enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if (response.isSuccessful()) {
+                            user = response.body();
+                            if (user != null) {
+                                tvMessage.setVisibility(View.VISIBLE);
+                                tvMessage.setText("Email đã tồn tại");
+                            }
+                        } else {
+                            User newUser = new User(strPassword, strEmail, strUserName);
+                            createUser(newUser);
+                            Toast.makeText(getView().getContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                            FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.frm_register, new LoginFragment()).commit();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+                        Toast.makeText(getContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
-
-
-
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frm_register, new LoginFragment()).commit();
+            }
+        });
         return rootView;
 
     }
 
-    private void createUser() {
+    private void createUser(User user) {
         APIService.API_SERVICE.createUser(user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-
+                if (response.isSuccessful()) {
+                    Log.d("Error", "Success");
+                }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                Log.d("Error", t.getMessage());
             }
         });
     }
-
-    private void findUserByEmail(String email) {
-        APIService.API_SERVICE.findUserByEmail(email).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                user = response.body();
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getContext(), "Thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-//    private void getAllUser() {
-//        APIService.API_SERVICE.getAllUser().enqueue(new Callback<List<User>>() {
-//            @Override
-//            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-//                listUser.addAll(response.body());
-//            }
-//            @Override
-//            public void onFailure(Call<List<User>> call, Throwable t) {
-//                Toast.makeText(getView().getContext(), "That bai", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-
-
 }

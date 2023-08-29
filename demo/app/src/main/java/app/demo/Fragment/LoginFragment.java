@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class LoginFragment extends Fragment {
     EditText edtEmail, edtPassWord;
     TextView tvMesage;
     List<User> listUser;
-
+    String strEmail, strPassword;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,71 +49,60 @@ public class LoginFragment extends Fragment {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        Button btnLogin = (Button) view.findViewById(R.id.btn_login);
+        Button btnRegister = (Button) view.findViewById(R.id.btn_register);
 
-            Button btnLogin = (Button) view.findViewById(R.id.btn_login);
-            Button btnRegister = (Button) view.findViewById(R.id.btn_register);
+        edtEmail = view.findViewById(R.id.edt_email);
+        edtPassWord = view.findViewById(R.id.edt_password);
+        tvMesage = view.findViewById(R.id.tv_message);
 
-            edtEmail = view.findViewById(R.id.edt_email);
-            edtPassWord = view.findViewById(R.id.edt_password);
-            tvMesage = view.findViewById(R.id.tv_message);
-            listUser = new ArrayList<>();
-            getAllUser();
-
-            btnLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    String strUserName = edtEmail.getText().toString().trim();
-                    String strPassword = edtPassWord.getText().toString().trim();
-
-                    boolean isUser = false;
-
-                    for (User user: listUser){
-                        if(strUserName.equals(user.getEmail()) && strPassword.equals(user.getPassword())){
-                            isUser = true;
-//                        Intent intent = new Intent(getContext(), AccountFragment.class);
-//                        intent.putExtra("user", user);
-//                        getContext().startActivity(intent);
-                            Gson gson = new Gson();
-                            String userJson = gson.toJson(user);
-                            editor.putString("user", userJson.toString());
-                            editor.putBoolean("isLogged", true);
-                            editor.apply();
-                            break;
-                        }
-                    }
-
-                    if(isUser){
-                        Toast.makeText(getView().getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-                    } else
-                    {
-                        tvMesage.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-            btnRegister.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    FragmentTransaction frmTransaction = getChildFragmentManager().beginTransaction();
-                    frmTransaction.replace(R.id.frm_login, new RegisterFragment()).commit();
-                }
-            });
-        return view;
-    }
-
-    private void getAllUser() {
-        APIService.API_SERVICE.getAllUser().enqueue(new Callback<List<User>>() {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                listUser.addAll(response.body());
+            public void onClick(View view) {
+                strEmail = edtEmail.getText().toString();
+                strPassword = edtPassWord.getText().toString();
+
+                findUserByEmail(strEmail);
             }
 
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(getView().getContext(), "That bai", Toast.LENGTH_SHORT).show();
+            private void findUserByEmail(String strEmail) {
+                APIService.API_SERVICE.findUserByEmail(strEmail).enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if (response.isSuccessful()) {
+                            User u = response.body();
+                            if (u != null) {
+                                if (u.getPassword().equals(strPassword)) {
+                                    editor.putBoolean("isLogged", true);
+                                    Gson gson = new Gson();
+                                    String userJson = gson.toJson(u);
+                                    editor.putString("user", userJson);
+                                    editor.apply();
+
+                                    Toast.makeText(getView().getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    tvMesage.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        } else
+                            Log.d("Error", "Khong co phan hoi");
+                    }
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+                        Log.d("Error", "Khong thuc hien");
+                    }
+                });
             }
         });
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction frmTransaction = getChildFragmentManager().beginTransaction();
+                frmTransaction.replace(R.id.frm_login, new RegisterFragment()).commit();
+            }
+        });
+        return view;
     }
 }

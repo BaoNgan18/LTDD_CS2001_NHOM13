@@ -8,12 +8,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class User implements Serializable {
-    private static long lastCreate = 0;
 
-    public User(String password, String email) {
-        this.id = lastCreate++;
+    public User(String password, String email, String userName) {
         this.password = password;
         this.email = email;
+        this.userName = userName;
     }
 
     private long id;

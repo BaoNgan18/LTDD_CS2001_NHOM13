@@ -5,6 +5,8 @@ import androidx.constraintlayout.utils.widget.ImageFilterView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ import app.demo.Adapter.BookAdapter;
 import app.demo.Adapter.ChapterAdapter;
 import app.demo.model.Book;
 import app.demo.model.Chapter;
+import app.demo.model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,19 +40,25 @@ public class BookDetail extends AppCompatActivity {
     private TextView tvBookName, tvGenre, tvAuthor, tvDescribe;
     private FloatingActionButton fab;
     private RecyclerView rcvBook, rcvChapter;
-    private BookAdapter bookAdapter;
     private ImageButton btnShare, btnFav;
     List<Chapter> listChapter;
-    List<Book> listBook;
+    List<Book> listBook, listFavBook;
+    User user;
 
-//    public BookDetail(Context context){
-//        this.context = context;
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user", "");
+        if (userJson.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "không nhận được người dùng", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Gson gson = new Gson();
+            user = gson.fromJson(userJson, User.class);
+        }
 
         Book book = (Book) getIntent().getSerializableExtra("book");
 
@@ -82,9 +92,16 @@ public class BookDetail extends AppCompatActivity {
         btnShare = findViewById(R.id.btn_share);
         btnShare.setBackground(null);
 
+        for(Book book1 : listFavBook){
+            if(book1.getId().equals(book.getId())){
+                btnFav.setSelected(true);
+                btnFav.setImageResource(R.drawable.ic_favorite);
+            }
+        }
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(!btnFav.isSelected()){
                     btnFav.setSelected(true);
 
@@ -118,18 +135,20 @@ public class BookDetail extends AppCompatActivity {
         LinearLayoutManager linear = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         rcvBook.setLayoutManager(linear);
         listBook = new ArrayList<>();
-        CallAPI();
+        getListBook();
+        listFavBook = new ArrayList<>();
+        getAllChaptersByBook(user.getId());
 
         rcvChapter = findViewById(R.id.rcv_chapter);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         rcvChapter.setLayoutManager(linearLayout);
         listChapter = new ArrayList<>();
-        CallAPI(book.getId());
+        getAllChaptersByBook(book.getId());
 
 
     }
 
-    public void CallAPI(long bookID) {
+    public void getAllChaptersByBook(long bookID) {
         APIService.API_SERVICE.getAllChaptersByBook(bookID).enqueue(new Callback<List<Chapter>>() {
             @Override
             public void onResponse(Call<List<Chapter>> call, Response<List<Chapter>> response) {
@@ -146,7 +165,7 @@ public class BookDetail extends AppCompatActivity {
             }
         });
     }
-    public void CallAPI() {
+    public void getListBook() {
         APIService.API_SERVICE.getListBook().enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
@@ -158,6 +177,20 @@ public class BookDetail extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Book>> call, Throwable t) {
                 Log.d("Error", t.getMessage());
+                Toast.makeText(BookDetail.this, "That bai", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getListFavoriteBookByUser(long userID){
+        APIService.API_SERVICE.getListFavoriteBookByUser(userID).enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                listFavBook.addAll(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
                 Toast.makeText(BookDetail.this, "That bai", Toast.LENGTH_SHORT).show();
             }
         });

@@ -12,6 +12,9 @@ import app.demo.model.User;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -20,11 +23,7 @@ import retrofit2.http.Query;
 public interface APIService {
     Gson gson = new GsonBuilder().create();
     APIService API_SERVICE = new Retrofit.Builder()
-<<<<<<< HEAD
-            .baseUrl("http://192.168.1.6:8080/api/")
-=======
-            .baseUrl("http://192.168.0.9:8080/api/")
->>>>>>> 6e0a16044f6f335294f5fc8fcae41541638b1ad1
+            .baseUrl("http://192.168.1.53:8080/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(APIService.class);
 
@@ -51,8 +50,8 @@ public interface APIService {
     @POST("nguoidung/{nguoidung_id}/yeuthich/{truyen_id}")
     Call<Book> addBookInFavorites(@Path("userID") long userID, @Path("bookID") long bookID);
 
-    @POST()
-    Call<User> createUser(User user);
+    @POST("nguoidung")
+    Call<User> createUser(@Body User user);
 
     @GET("nguoidung/find-by-email/{email}")
     Call<User> findUserByEmail(@Path("email") String email);
