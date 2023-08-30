@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -33,25 +35,56 @@
                 android:textSize="20sp"
                 android:layout_marginTop="6dp"
                 android:layout_gravity="center_horizontal"
+                android:fontFamily="sans-serif"
                 />
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="end">-->
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/btn_previous"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:backgroundTint="@color/blue_2"-->
-<!--                android:drawableLeft="@drawable/ic_previous"/>-->
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/btn_next"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:backgroundTint="@color/blue_2"-->
-<!--                android:drawableLeft="@drawable/ic_next"/>-->
-<!--        </LinearLayout>-->
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/nav_bar">
+        <androidx.constraintlayout.utils.widget.ImageFilterButton
+            android:id="@+id/btn_home"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_whome"
+            android:elevation="10dp"
+            android:layout_marginTop="-510dp"
+            android:backgroundTint="@color/blue_2"
+            android:background="@drawable/bg_card"
+            android:layout_marginLeft="20dp"
+            />
+        <androidx.constraintlayout.utils.widget.ImageFilterButton
+            android:id="@+id/btn_previous"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_previous"
+            android:elevation="10dp"
+            android:layout_marginTop="-510dp"
+            android:backgroundTint="@color/blue_2"
+            android:background="@drawable/bg_card" />
+        <Spinner
+            android:id="@+id/sp_chapter"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_title"
+            android:textAlignment="center"
+            tools:listitem="@layout/chapter"
+            android:clickable="true"/>
+        <androidx.constraintlayout.utils.widget.ImageFilterButton
+            android:id="@+id/btn_next"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_next"
+            android:elevation="10dp"
+            android:layout_marginTop="-510dp"
+            android:backgroundTint="@color/blue_2"
+            android:background="@drawable/bg_card"/>
+    </com.google.android.material.appbar.MaterialToolbar>
 
 </RelativeLayout>

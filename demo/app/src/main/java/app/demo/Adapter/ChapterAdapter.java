@@ -1,5 +1,6 @@
 package app.demo.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,10 +22,16 @@ import app.demo.model.Chapter;
 
 public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterViewHolder> {
 
-    private final List<Chapter> chapters;
-    public ChapterAdapter(List<Chapter> listChapter){
-        chapters = listChapter;
+//    private List<Chapter> listChapter;
+//    public ChapterAdapter(List<Chapter> listChapter){
+//        this.listChapter = listChapter;
+//    }
+    private Book book;
+
+    public ChapterAdapter(Book book) {
+        this.book = book;
     }
+
     @NonNull
     @Override
     public ChapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,7 +42,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
     @Override
     public void onBindViewHolder(@NonNull ChapterViewHolder holder, int position) {
 
-        Chapter chapter = chapters.get(position);
+        Chapter chapter = book.getListChapter().get(position);
 
         holder.tvNameChapter.setText(chapter.getChapterName());
 
@@ -44,6 +51,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), Reading.class);
                 Log.d("Chapter", chapter.toString());
+                intent.putExtra("book", book);
                 intent.putExtra("chapter", chapter);
                 view.getContext().startActivity(intent);
             }
@@ -52,7 +60,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
 
     @Override
     public int getItemCount() {
-        return chapters.size();
+        return book.getListChapter().size();
     }
 
     public class ChapterViewHolder extends RecyclerView.ViewHolder {

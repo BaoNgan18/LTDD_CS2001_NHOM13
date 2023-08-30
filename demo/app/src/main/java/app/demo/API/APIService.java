@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -23,12 +24,14 @@ import retrofit2.http.Query;
 public interface APIService {
     Gson gson = new GsonBuilder().create();
     APIService API_SERVICE = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.53:8080/api/")
+            .baseUrl("http://192.168.1.87:8080/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(APIService.class);
 
     @GET("truyen")
     Call<List<Book>> getListBook();
+    @GET("truyen/{id}")
+    Call<Book> getBookByID(@Path("id") long id);
 
     @GET("theloai/{genreId}/truyen/")
     Call<List<Book>> getBookByGenre(@Path("genreId") long genreId);
@@ -43,16 +46,19 @@ public interface APIService {
     Call<List<User>> getAllUser();
 
     @GET("nguoidung/{id}/truyenyeuthich/")
-    Call<List<Book>> getListFavoriteBookByUser(@Path("userID") long userID);
+    Call<List<Book>> getListFavoriteBookByUser(@Path("id") long userID);
     @GET("nguoidung/{id}/truyen/")
-    Call<List<Book>> getBookByUser(@Path("userID") long userID);
+    Call<List<Book>> getBookByUser(@Path("id") long userID);
 
-    @POST("nguoidung/{nguoidung_id}/yeuthich/{truyen_id}")
-    Call<Book> addBookInFavorites(@Path("userID") long userID, @Path("bookID") long bookID);
+    @POST("nguoidung/{userID}/yeuthich/{bookID}")
+    Call<Void> addBookInFavorites(@Path("userID") long userID, @Path("bookID") long bookID);
 
     @POST("nguoidung")
     Call<User> createUser(@Body User user);
 
     @GET("nguoidung/find-by-email/{email}")
     Call<User> findUserByEmail(@Path("email") String email);
+
+    @DELETE("nguoidung/{userId}/xoayeuthich/{bookId}")
+    Call<Void> removeBookFromFavorites(@Path("userId") long userID, @Path("bookId") long bookID);
 }

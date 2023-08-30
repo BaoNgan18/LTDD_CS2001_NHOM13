@@ -52,7 +52,7 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
-    @GetMapping("{id}/truyenyeuthich/")
+    @GetMapping("/{id}/truyenyeuthich/")
     public List<Book> getListFavoriteBookByUser(@PathVariable(value = "id") Long id) {
         return userService.getListFavoriteBookByUser(id);
     }
@@ -65,14 +65,14 @@ public class UserController {
 
 
     @PostMapping("/{nguoidung_id}/yeuthich/{truyen_id}")
-    public ResponseEntity<String> addBookInFavorites(
+    public ResponseEntity<Void> addBookInFavorites(
             @PathVariable(value = "nguoidung_id") Long userId,
             @PathVariable(value = "truyen_id") Long bookId) {
         try {
             userService.addBookInFavorites(userId, bookId);
-            return ResponseEntity.ok("Đã thêm truyện vào mục yêu thích.");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Thêm truyện vào mục yêu thích thất bại.");
+            return ResponseEntity.badRequest().build();
         }
     }
 

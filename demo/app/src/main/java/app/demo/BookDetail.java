@@ -1,6 +1,7 @@
 package app.demo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.constraintlayout.utils.widget.ImageFilterView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import app.demo.API.APIService;
 import app.demo.Adapter.BookAdapter;
@@ -38,14 +40,12 @@ public class BookDetail extends AppCompatActivity {
     private ImageView imgCover;
     private ImageFilterView imgBigCover;
     private TextView tvBookName, tvGenre, tvAuthor, tvDescribe;
-    private FloatingActionButton fab;
+    private ImageFilterButton fab;
     private RecyclerView rcvBook, rcvChapter;
-    private ImageButton btnShare, btnFav;
     List<Chapter> listChapter;
     List<Book> listBook, listFavBook;
     User user;
-
-
+    Book book;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +60,7 @@ public class BookDetail extends AppCompatActivity {
             user = gson.fromJson(userJson, User.class);
         }
 
-        Book book = (Book) getIntent().getSerializableExtra("book");
+        book = (Book) getIntent().getSerializableExtra("book");
 
         //ánh xạ các item
         imgCover =findViewById(R.id.img_cover);
@@ -70,8 +70,6 @@ public class BookDetail extends AppCompatActivity {
         tvAuthor = findViewById(R.id.tv_author);
         tvDescribe = findViewById(R.id.tv_describe);
         rcvBook = findViewById(R.id.rcv_book);
-        btnFav = findViewById(R.id.btn_fav);
-        btnShare = findViewById(R.id.btn_share);
 
         StringBuilder sb = new StringBuilder();
         book.getListGenre().forEach(t -> sb.append(t.getNameOfGenre()+", "));
@@ -80,91 +78,111 @@ public class BookDetail extends AppCompatActivity {
         }
 //        book.setId(id);
         tvBookName.setText(book.getNameBook());
-        tvGenre.setText(sb.toString());
-        tvAuthor.setText(book.getUser().getUserName());
+        tvGenre.setText("Thể loại: "+sb.toString());
+        tvAuthor.setText("Tác giả: "+book.getUser().getUserName());
         tvDescribe.setText("Không có mô tả");
         Glide.with(getApplicationContext()).load(book.getCoverImg()).into(imgCover);
         Glide.with(getApplicationContext()).load(book.getCoverImg()).into(imgBigCover);
 
+        listFavBook = new ArrayList<>();
+        getListFavoriteBookByUser(user.getId());
+//        fab = findViewById(R.id.fab_add);
 
-        btnFav = findViewById(R.id.btn_fav);
-        btnFav.setBackground(null);
-        btnShare = findViewById(R.id.btn_share);
-        btnShare.setBackground(null);
-
-        for(Book book1 : listFavBook){
-            if(book1.getId().equals(book.getId())){
-                btnFav.setSelected(true);
-                btnFav.setImageResource(R.drawable.ic_favorite);
-            }
-        }
-        btnFav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(!btnFav.isSelected()){
-                    btnFav.setSelected(true);
-
-                    Toast.makeText(getApplicationContext(), "Đã thêm truyện vào danh sách yêu thích", Toast.LENGTH_LONG).show();
-                    btnFav.setImageResource(R.drawable.ic_favorite);
-                } else{
-                    btnFav.setSelected(false);
-                    Toast.makeText(getApplicationContext(), "Đã xóa truyện khỏi danh sách yêu thích", Toast.LENGTH_LONG).show();
-                    btnFav.setImageResource(R.drawable.ic_favorite_border);
-                }
-
-            }
-        });
-
-        btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Đã chia sẻ truyện", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        fab = findViewById(R.id.fab_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Toast.makeText(getApplicationContext(), "Đã thêm truyện vào danh sách", Toast.LENGTH_LONG).show();
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(!fab.isSelected()){
+//                    addBookInFavorites(user.getId(), book.getId());
+//                    fab.setImageResource(R.drawable.ic_favorite);
+//                    fab.setSelected(true);
+//                    Toast.makeText(getApplicationContext(), "Đã thêm truyện vào danh sách", Toast.LENGTH_LONG).show();
+//                } else {
+//                    removeBookFromFavorites(user.getId(), book.getId());
+//                    fab.setImageResource(R.drawable.ic_favorite_border);
+//                    fab.setSelected(false);
+//                    Toast.makeText(getApplicationContext(), "Đã xóa truyện khỏi danh sách", Toast.LENGTH_LONG).show();
+//                }
+//
+//            }
+//        });
         rcvBook = findViewById(R.id.rcv_book);
         LinearLayoutManager linear = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         rcvBook.setLayoutManager(linear);
         listBook = new ArrayList<>();
         getListBook();
-        listFavBook = new ArrayList<>();
-        getAllChaptersByBook(user.getId());
 
         rcvChapter = findViewById(R.id.rcv_chapter);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         rcvChapter.setLayoutManager(linearLayout);
         listChapter = new ArrayList<>();
-        getAllChaptersByBook(book.getId());
+        getBookByID(book.getId());
 
 
     }
 
-    public void getAllChaptersByBook(long bookID) {
-        APIService.API_SERVICE.getAllChaptersByBook(bookID).enqueue(new Callback<List<Chapter>>() {
+    private void removeBookFromFavorites(long id, Long id1) {
+        APIService.API_SERVICE.removeBookFromFavorites(id, id1).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<List<Chapter>> call, Response<List<Chapter>> response) {
-
-                listChapter.addAll(response.body());
-                ChapterAdapter chapterAdapter = new ChapterAdapter(listChapter);
-                rcvChapter.setAdapter(chapterAdapter);
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                    Log.d("Error", "Success");
             }
 
             @Override
-            public void onFailure(Call<List<Chapter>> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 Log.d("Error", t.getMessage());
-                Toast.makeText(BookDetail.this, "That bai", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
+    private void addBookInFavorites(long id, Long id1) {
+        APIService.API_SERVICE.addBookInFavorites(id, id1).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                    Log.d("Error", "Success");
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("Error", t.getMessage());
+            }
+        });
+    }
+
+    private void getListFavoriteBookByUser(long id) {
+        APIService.API_SERVICE.getListFavoriteBookByUser(id).enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                listFavBook = response.body();
+                if(listFavBook.isEmpty())
+                {
+                    Log.d("Error", "listFav null");
+                }
+                else {
+                    int dem=0;
+                    for(Book b: listFavBook){
+                        if(book.getId().equals(b.getId()))
+                        {
+                            Log.d("Error", "co tim thay");
+//                            Toast.makeText(getApplicationContext(), "Đã có trong thư viện", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        else{
+                            Log.d("Error", "khong tim thay");
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
+                Log.d("Error", t.getMessage());
+            }
+        });
+    }
+
     public void getListBook() {
         APIService.API_SERVICE.getListBook().enqueue(new Callback<List<Book>>() {
             @Override
@@ -182,15 +200,18 @@ public class BookDetail extends AppCompatActivity {
         });
     }
 
-    public void getListFavoriteBookByUser(long userID){
-        APIService.API_SERVICE.getListFavoriteBookByUser(userID).enqueue(new Callback<List<Book>>() {
+    private void getBookByID(long id){
+        APIService.API_SERVICE.getBookByID(id).enqueue(new Callback<Book>() {
             @Override
-            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-                listFavBook.addAll(response.body());
+            public void onResponse(Call<Book> call, Response<Book> response) {
+                Book book = response.body();
+                ChapterAdapter chapterAdapter = new ChapterAdapter(book);
+                rcvChapter.setAdapter(chapterAdapter);
             }
 
             @Override
-            public void onFailure(Call<List<Book>> call, Throwable t) {
+            public void onFailure(Call<Book> call, Throwable t) {
+                Log.d("Error", t.getMessage());
                 Toast.makeText(BookDetail.this, "That bai", Toast.LENGTH_SHORT).show();
             }
         });

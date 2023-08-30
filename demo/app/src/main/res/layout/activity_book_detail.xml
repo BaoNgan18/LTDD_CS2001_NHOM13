@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -7,37 +7,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right">
-            <ImageButton
-                android:id="@+id/btn_fav"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_favorite_border"
-                android:layout_marginEnd="4dp"/>
-            <ImageButton
-                android:id="@+id/btn_share"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_share"
-                android:layout_marginLeft="4dp"
-                android:layout_marginEnd="4dp"/>
-        </LinearLayout>
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/img_big_cover"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:src="@drawable/r"
-            android:layout_marginTop="-30dp"/>
+            android:src="@drawable/r" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="300dp"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:background="@drawable/bg_card"
-            android:layout_marginTop="-60dp"
+            android:layout_marginTop="-30dp"
             android:layout_marginLeft="30dp">
 
             <LinearLayout
@@ -53,13 +34,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginLeft="6dp">
                     <TextView
                         android:id="@+id/tv_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Bleach"
-                        android:textSize="30sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         android:fontFamily="serif"/>
 
@@ -68,7 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Tác giả"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold"
                         android:fontFamily="serif"/>
 
@@ -77,7 +59,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Thể loại"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold"
                         android:fontFamily="serif"/>
                 </LinearLayout>
@@ -119,15 +101,17 @@
             android:id="@+id/rcv_book"
             android:layout_marginTop="40dp"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <androidx.constraintlayout.utils.widget.ImageFilterButton
             android:id="@+id/fab_add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:clickable="true"
             app:srcCompat="@drawable/ic_favorite_border"
-            android:layout_marginLeft="350dp"
+            android:layout_marginLeft="290dp"
             android:elevation="10dp"
-            android:layout_marginTop="-650dp"
-            android:backgroundTint="@color/red_1"/>
+            android:layout_marginTop="-520dp"
+            android:backgroundTint="@color/red_2"
+            android:background="@drawable/bg_card"/>
+
     </LinearLayout>
-</ScrollView>
+</RelativeLayout>

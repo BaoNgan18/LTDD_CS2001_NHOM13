@@ -97,6 +97,14 @@ public class Book implements Serializable {
     public void setListChapter(List<Chapter> listChapter) {
         this.listChapter = listChapter;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", nameBook='" + nameBook + '\'' +
+                '}';
+    }
 }
 
 

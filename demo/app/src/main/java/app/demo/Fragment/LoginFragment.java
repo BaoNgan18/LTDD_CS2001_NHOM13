@@ -72,6 +72,7 @@ public class LoginFragment extends Fragment {
                         if (response.isSuccessful()) {
                             User u = response.body();
                             if (u != null) {
+                                Log.d("Error", u.toString());
                                 if (u.getPassword().equals(strPassword)) {
                                     editor.putBoolean("isLogged", true);
                                     Gson gson = new Gson();

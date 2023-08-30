@@ -15,6 +15,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -134,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 getAllBook();
                 view.setVisibility(View.VISIBLE);
+                bookAdapter = new BookAdapter(listBook);
+                rcvResult.setAdapter(bookAdapter);
                 bookAdapter.getFilter().filter(query);
                 return false;
             }
@@ -142,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 getAllBook();
                 view.setVisibility(View.VISIBLE);
+                bookAdapter = new BookAdapter(listBook);
+                rcvResult.setAdapter(bookAdapter);
                 bookAdapter.getFilter().filter(newText);
                 return false;
             }
@@ -154,8 +159,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 listBook.addAll(response.body());
-                bookAdapter = new BookAdapter(listBook);
-                rcvResult.setAdapter(bookAdapter);
             }
 
             @Override
