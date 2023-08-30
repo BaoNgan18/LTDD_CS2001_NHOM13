@@ -78,13 +78,13 @@ public class UserController {
 
 
     @DeleteMapping("{userId}/xoayeuthich/{bookId}")
-    public ResponseEntity<String> removeBookFromFavorites(@PathVariable(value = "bookId") Long bookId,
+    public ResponseEntity<Void> removeBookFromFavorites(@PathVariable(value = "bookId") Long bookId,
                                                                        @PathVariable(value = "userId") Long userId) {
         try {
-            userService.removeBookFromFavorites(bookId, userId);
-            return ResponseEntity.ok("Đã xóa truyện khỏi mục yêu thích.");
+            userService.removeBookFromFavorites(userId, bookId);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Xóa truyện khỏi mục yêu thích thất bại.");
+            return ResponseEntity.badRequest().build();
         }
     }
 
