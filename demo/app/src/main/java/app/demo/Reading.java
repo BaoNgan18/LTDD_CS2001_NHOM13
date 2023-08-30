@@ -41,7 +41,6 @@ public class Reading extends AppCompatActivity {
 
     TextView tvNameChapter, tvContent;
     ImageView imgCover;
-    RecyclerView rcvReading;
     List<Chapter> listChapter;
     NestedScrollView nsvReading;
     ImageFilterButton btnPrevious, btnNext, btnHome;
@@ -49,7 +48,6 @@ public class Reading extends AppCompatActivity {
     Spinner spChapter;
     Book book;
     MaterialToolbar navBar;
-    int curentPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +74,7 @@ public class Reading extends AppCompatActivity {
 
         listChapter = new ArrayList<>();
         getAllChaptersByBook(book.getId());
+        ListIterator<Chapter> listIterator = listChapter.listIterator();
 
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,35 +87,52 @@ public class Reading extends AppCompatActivity {
         nsvReading.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                if(i1<i3)
+                if (i1 < i3)
                     navBar.setVisibility(View.VISIBLE);
-                else if(i1>i3)
+                else if (i1 > i3)
                     navBar.setVisibility(View.GONE);
+                int scrollViewHeight = nsvReading.getHeight();
+                int contentHeight = nsvReading.getChildAt(0).getHeight();
+                int scrollY = nsvReading.getScrollY();
 
+                if (scrollY + scrollViewHeight >= contentHeight) {
+                    if(listIterator.hasNext())
+                        Toast.makeText(getApplicationContext(), "Bạn đã đọc hết", Toast.LENGTH_SHORT).show();
+                    else
+                } else {
+                    // Chưa cuộn đến cuối nội dung
+                }
             }
         });
 
-        ListIterator<Chapter> listIterator = listChapter.listIterator();
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Chapter nextChapter = listIterator.next();
-                disPlayChapter(nextChapter);
+                if(listIterator.hasNext()){
+                    btnNext.setClickable(true);
+                    Chapter nextChapter = listIterator.next();
+                    disPlayChapter(nextChapter);
+                }
+                else {
+                    btnNext.setClickable(false);
+                }
             }
         });
         btnPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Chapter previous = listIterator.previous();
-                disPlayChapter(previous);
+                if(listIterator.hasPrevious()){
+                    btnNext.setClickable(true);
+                    Chapter previousChapter = listIterator.previous();
+                    disPlayChapter(previousChapter);
+                }
+                else {
+                    btnNext.setClickable(false);
+                }
             }
         });
 
-
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-//        rcvReading.setLayoutManager(linearLayoutManager);
-//        rcvReading = findViewById(R.id.rcv_reading);
     }
 
     private void getAllChaptersByBook(long id) {
@@ -135,7 +151,6 @@ public class Reading extends AppCompatActivity {
                             Chapter chapter1 = (Chapter) spChapter.getItemAtPosition(i);
                             disPlayChapter(chapter1);
                         }
-
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -143,14 +158,13 @@ public class Reading extends AppCompatActivity {
                     });
                 }
             }
-
             @Override
             public void onFailure(Call<List<Chapter>> call, Throwable t) {
                 Toast.makeText(Reading.this, "That bai", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    public void disPlayChapter(Chapter chapter){
+    public void disPlayChapter(Chapter chapter) {
         tvNameChapter.setText(chapter.getChapterName());
         tvContent.setText(chapter.getContent());
     }

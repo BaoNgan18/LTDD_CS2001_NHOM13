@@ -13,9 +13,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT t FROM Book t JOIN t.user tg ON tg.id = ?1")
     List<Book> getBookByUser(Long id);
-<<<<<<< HEAD
-=======
-
->>>>>>> dc273b0c775a28dcd905766fc72c9b7f0b58eb5f
     User findByEmail(String email);
 }
