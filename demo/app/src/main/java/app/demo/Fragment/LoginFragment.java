@@ -35,6 +35,7 @@ public class LoginFragment extends Fragment {
     TextView tvMesage;
     List<User> listUser;
     String strEmail, strPassword;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,47 +62,35 @@ public class LoginFragment extends Fragment {
             public void onClick(View view) {
                 strEmail = edtEmail.getText().toString();
                 strPassword = edtPassWord.getText().toString();
+                User us = new User(strPassword, strEmail, "");
 
-                findUserByEmail(strEmail);
+                loginAccount(us);
             }
 
-            private void findUserByEmail(String strEmail) {
-                APIService.API_SERVICE.findUserByEmail(strEmail).enqueue(new Callback<User>() {
+            private void loginAccount(User us) {
+                APIService.API_SERVICE.loginAccount(us).enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         if (response.isSuccessful()) {
-                            User u = response.body();
-                            if (u != null) {
-                                Log.d("Error", u.toString());
-                                if (u.getPassword().equals(strPassword)) {
-                                    editor.putBoolean("isLogged", true);
-                                    Gson gson = new Gson();
-                                    String userJson = gson.toJson(u);
-                                    editor.putString("user", userJson);
-                                    editor.apply();
-
-                                    Toast.makeText(getView().getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    tvMesage.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        } else
-                            Log.d("Error", "Khong co phan hoi");
+                            Toast.makeText(getView().getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            User newUser = response.body();
+                            editor.putBoolean("isLogged", true);
+                            Gson gson = new Gson();
+                            String userJson = gson.toJson(newUser);
+                            editor.putString("user", userJson);
+                            editor.apply();
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Log.d("Error", response.toString());
+                        }
                     }
+
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
                         Log.d("Error", "Khong thuc hien");
                     }
                 });
-            }
-        });
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction frmTransaction = getChildFragmentManager().beginTransaction();
-                frmTransaction.replace(R.id.frm_login, new RegisterFragment()).commit();
             }
         });
         return view;

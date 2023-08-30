@@ -26,6 +26,12 @@ public class Book implements Serializable {
         this.setListGenre(listGenre);
     }
 
+    public Book(String nameBook, User user, String describe) {
+        this.nameBook = nameBook;
+        this.user = user;
+        this.describe = describe;
+    }
+
     public Long getId() {
         return id;
     }

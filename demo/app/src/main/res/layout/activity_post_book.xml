@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PostBook"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/img_post_cover"
+        android:background="@color/gray" />
+
+    <EditText
+        android:layout_marginTop="12dp"
+        android:id="@+id/edt_name_book"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white"
+        android:hint="Ten truyện"
+        android:inputType="text"
+        android:paddingStart="4dp"
+        android:textSize="18dp"
+        android:layout_marginLeft="8dp"/>
+
+    <View
+        android:paddingStart="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:background="@color/black"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:layout_marginTop="12dp"
+        android:id="@+id/edt_describe"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white"
+        android:hint="Ten truyện"
+        android:inputType="text"
+        android:paddingStart="4dp"
+        android:textSize="18dp"
+        android:layout_marginLeft="8dp"/>
+
+    <View
+        android:paddingStart="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:background="@color/black"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="12dp"/>
+
+
+</LinearLayout>

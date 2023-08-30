@@ -31,6 +31,8 @@ import java.util.List;
 import app.demo.API.APIService;
 import app.demo.Adapter.BookAdapter;
 import app.demo.Adapter.ViewPagerAdapter;
+import app.demo.Fragment.AccountFragment;
+import app.demo.Fragment.LoadFragment;
 import app.demo.Fragment.SearchFragment;
 import app.demo.model.Book;
 import app.demo.model.Genre;
@@ -78,11 +80,12 @@ public class MainActivity extends AppCompatActivity {
                     mViewPager.setCurrentItem(0);
                 } else if (id == R.id.menu_lib) {
                     mViewPager.setCurrentItem(1);
-                } else if (id == R.id.menu_account) {
+                } else if (id == R.id.menu_create) {
                     mViewPager.setCurrentItem(2);
+                } else if (id == R.id.menu_account) {
+                    mViewPager.setCurrentItem(3);
                 }
-                return true;
-            }
+                return true;}
         });
 
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -97,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
                         mBotNav.getMenu().findItem(R.id.menu_lib).setChecked(true);
                         break;
                     case 2:
+                        mBotNav.getMenu().findItem(R.id.menu_create).setChecked(true);
+                        break;
+                    case 3:
                         mBotNav.getMenu().findItem(R.id.menu_account).setChecked(true);
                         break;
                     default:
@@ -166,5 +172,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Thất bại", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+        if (itemId == R.id.img_avatar) {
+            getSupportFragmentManager().beginTransaction().add(R.id.main, new AccountFragment()).commit();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -75,6 +76,10 @@ public class Reading extends AppCompatActivity {
         listChapter = new ArrayList<>();
         getAllChaptersByBook(book.getId());
         ListIterator<Chapter> listIterator = listChapter.listIterator();
+        Iterator<Chapter> iChapter = listChapter.stream().iterator();
+//
+//        int currentPosition = listIterator.nextIndex();
+//        Chapter currentChapter = listChapter.get(currentPosition);
 
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,17 +96,17 @@ public class Reading extends AppCompatActivity {
                     navBar.setVisibility(View.VISIBLE);
                 else if (i1 > i3)
                     navBar.setVisibility(View.GONE);
-                int scrollViewHeight = nsvReading.getHeight();
-                int contentHeight = nsvReading.getChildAt(0).getHeight();
-                int scrollY = nsvReading.getScrollY();
-
-                if (scrollY + scrollViewHeight >= contentHeight) {
-                    if(listIterator.hasNext())
-                        Toast.makeText(getApplicationContext(), "Bạn đã đọc hết", Toast.LENGTH_SHORT).show();
-                    else
-                } else {
-                    // Chưa cuộn đến cuối nội dung
-                }
+//                int scrollViewHeight = nsvReading.getHeight();
+//                int contentHeight = nsvReading.getChildAt(0).getHeight();
+//                int scrollY = nsvReading.getScrollY();
+//
+//                if (scrollY + scrollViewHeight >= contentHeight) {
+//                    if(listIterator.hasNext())
+//                        Toast.makeText(getApplicationContext(), "Bạn đã đọc hết", Toast.LENGTH_SHORT).show();
+//                    else
+//                } else {
+//                    // Chưa cuộn đến cuối nội dung
+//                }
             }
         });
 
@@ -109,16 +114,12 @@ public class Reading extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listIterator.hasNext()){
-                    btnNext.setClickable(true);
-                    Chapter nextChapter = listIterator.next();
-                    disPlayChapter(nextChapter);
-                }
-                else {
-                    btnNext.setClickable(false);
-                }
+                Chapter nextChapter = nextChapter(listChapter, chapter);
+                Log.d("Error", nextChapter.toString());
+                disPlayChapter(nextChapter);
             }
         });
+
         btnPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +129,7 @@ public class Reading extends AppCompatActivity {
                     disPlayChapter(previousChapter);
                 }
                 else {
+                    Log.d("Error", "khong qua previous");
                     btnNext.setClickable(false);
                 }
             }
@@ -167,5 +169,15 @@ public class Reading extends AppCompatActivity {
     public void disPlayChapter(Chapter chapter) {
         tvNameChapter.setText(chapter.getChapterName());
         tvContent.setText(chapter.getContent());
+    }
+
+    public Chapter nextChapter(List<Chapter> listChapter, Chapter currentChapter){
+        int currentIndex = listChapter.indexOf(currentChapter);
+
+        if (currentIndex != -1 && currentIndex < listChapter.size() - 1) {
+            return listChapter.get(currentIndex + 1);
+        }
+
+        return null;
     }
 }

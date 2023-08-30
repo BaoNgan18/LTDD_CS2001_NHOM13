@@ -53,7 +53,7 @@ public class BookDetail extends AppCompatActivity {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE);
         String userJson = sharedPreferences.getString("user", "");
         if (userJson.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "không nhận được người dùng", Toast.LENGTH_SHORT).show();
+            Log.d("Error", "userJson null");
         }
         else {
             Gson gson = new Gson();
@@ -86,25 +86,27 @@ public class BookDetail extends AppCompatActivity {
 
         listFavBook = new ArrayList<>();
         getListFavoriteBookByUser(user.getId());
-//        fab = findViewById(R.id.fab_add);
 
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(!fab.isSelected()){
-//                    addBookInFavorites(user.getId(), book.getId());
-//                    fab.setImageResource(R.drawable.ic_favorite);
-//                    fab.setSelected(true);
-//                    Toast.makeText(getApplicationContext(), "Đã thêm truyện vào danh sách", Toast.LENGTH_LONG).show();
-//                } else {
-//                    removeBookFromFavorites(user.getId(), book.getId());
-//                    fab.setImageResource(R.drawable.ic_favorite_border);
-//                    fab.setSelected(false);
-//                    Toast.makeText(getApplicationContext(), "Đã xóa truyện khỏi danh sách", Toast.LENGTH_LONG).show();
-//                }
-//
-//            }
-//        });
+        fab = findViewById(R.id.fab_add);
+        fab.setImageResource(R.drawable.ic_favorite_border);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!fab.isSelected()){
+                    addBookInFavorites(user.getId(), book.getId());
+                    fab.setImageResource(R.drawable.ic_favorite);
+                    fab.setSelected(true);
+                    Toast.makeText(getApplicationContext(), "Đã thêm truyện vào danh sách", Toast.LENGTH_LONG).show();
+                } else {
+                    removeBookFromFavorites(user.getId(), book.getId());
+                    fab.setImageResource(R.drawable.ic_favorite_border);
+                    fab.setSelected(false);
+                    Toast.makeText(getApplicationContext(), "Đã xóa truyện khỏi danh sách", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
         rcvBook = findViewById(R.id.rcv_book);
         LinearLayoutManager linear = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         rcvBook.setLayoutManager(linear);
@@ -120,12 +122,41 @@ public class BookDetail extends AppCompatActivity {
 
     }
 
+
+
+    private void getListFavoriteBookByUser(long id) {
+        APIService.API_SERVICE.getListFavoriteBookByUser(id).enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                boolean isFav = false;
+                if(response.isSuccessful())
+                {
+                    listFavBook = new ArrayList<>();
+                    listFavBook.addAll(response.body());
+                    for(Book b:listFavBook){
+                        if(b.getId().equals(book.getId())){
+                            fab.setImageResource(R.drawable.ic_favorite);
+                            fab.setSelected(true);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
+                Log.d("Error", "Failure ");
+            }
+        });
+    }
+
+
     private void removeBookFromFavorites(long id, Long id1) {
         APIService.API_SERVICE.removeBookFromFavorites(id, id1).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful())
-                    Log.d("Error", "Success");
+                    Log.d("Error", "Delete Success");
             }
 
             @Override
@@ -141,43 +172,11 @@ public class BookDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful())
-                    Log.d("Error", "Success");
+                    Log.d("Error", "Add Success");
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.d("Error", t.getMessage());
-            }
-        });
-    }
-
-    private void getListFavoriteBookByUser(long id) {
-        APIService.API_SERVICE.getListFavoriteBookByUser(id).enqueue(new Callback<List<Book>>() {
-            @Override
-            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-                listFavBook = response.body();
-                if(listFavBook.isEmpty())
-                {
-                    Log.d("Error", "listFav null");
-                }
-                else {
-                    int dem=0;
-                    for(Book b: listFavBook){
-                        if(book.getId().equals(b.getId()))
-                        {
-                            Log.d("Error", "co tim thay");
-//                            Toast.makeText(getApplicationContext(), "Đã có trong thư viện", Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                        else{
-                            Log.d("Error", "khong tim thay");
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Book>> call, Throwable t) {
                 Log.d("Error", t.getMessage());
             }
         });

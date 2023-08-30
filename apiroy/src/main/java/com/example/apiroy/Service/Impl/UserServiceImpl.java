@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public Book removeBookFromFavorites(Long bookId, Long userId) throws Exception {
+    public Book removeBookFromFavorites(Long userId, Long bookId) throws Exception {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception("User not found: " + userId));
 
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
                 System.out.println("[DEBUG] - " + account);
                 Optional<User> accountEntity = userRepository.loginAccount(account.getEmail(), account.getPassword());
                 if (accountEntity.isPresent()) {
-                    return account;
+                    return accountEntity.get();
                 } else {
                     throw new Exception("Wrong password!");
                 }

@@ -77,14 +77,13 @@ public class UserController {
     }
 
 
-    @DeleteMapping("{userId}/xoayeuthich/{bookId}")
-    public ResponseEntity<String> removeBookFromFavorites(@PathVariable(value = "bookId") Long bookId,
-                                                                       @PathVariable(value = "userId") Long userId) {
+    @DeleteMapping("/{userId}/xoayeuthich/{bookId}")
+    public ResponseEntity<Void> removeBookFromFavorites(@PathVariable(value = "userId") Long userId,@PathVariable(value = "bookId") Long bookId) {
         try {
             userService.removeBookFromFavorites(bookId, userId);
-            return ResponseEntity.ok("Đã xóa truyện khỏi mục yêu thích.");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Xóa truyện khỏi mục yêu thích thất bại.");
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -98,7 +97,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping(path = "/login")
+    @PostMapping("/login")
     public ResponseEntity<?> loginAccount(@RequestBody User user) throws Exception {
         try {
             System.out.println("[DEBUG] - " + user);

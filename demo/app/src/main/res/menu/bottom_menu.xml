@@ -8,10 +8,10 @@
         android:id="@+id/menu_lib"
         android:title="Thư Viện"
         android:icon="@drawable/ic_library"/>
-<!--    <item-->
-<!--        android:id="@+id/menu_noti"-->
-<!--        android:title="Thông báo"-->
-<!--        android:icon="@drawable/ic_notifications"/>-->
+    <item
+        android:id="@+id/menu_create"
+        android:title="Viết"
+        android:icon="@drawable/ic_create"/>
     <item
         android:id="@+id/menu_account"
         android:title="Tài khoản"

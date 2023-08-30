@@ -8,6 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import app.demo.Fragment.AccountFragment;
 import app.demo.Fragment.HomeFragment;
 import app.demo.Fragment.LibraryFragment;
+import app.demo.Fragment.WritingFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
@@ -22,20 +23,18 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         switch (position) {
             case 0:
                 return new HomeFragment();
-
             case 1:
                 return new LibraryFragment();
-
             case 2:
-
+                return new WritingFragment();
+            case 3:
                 return new AccountFragment();
-
             default:
                 return new HomeFragment();
         }}
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 }
