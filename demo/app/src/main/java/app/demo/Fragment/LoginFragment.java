@@ -93,6 +93,14 @@ public class LoginFragment extends Fragment {
                 });
             }
         });
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frm_login, new RegisterFragment()).commit();
+            }
+        });
         return view;
     }
 }

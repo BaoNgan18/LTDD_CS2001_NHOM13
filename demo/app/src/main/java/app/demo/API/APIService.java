@@ -28,7 +28,7 @@ import retrofit2.http.Query;
 public interface APIService {
     Gson gson = new GsonBuilder().create();
     APIService API_SERVICE = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.87:8080/api/")
+            .baseUrl("http://192.168.10.182:8080/api/")
 //            .baseUrl("http://192.168.0.9:8080/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(APIService.class);
@@ -73,5 +73,8 @@ public interface APIService {
     Call<Void> postCoverImg(@Part MultipartBody.Part filePart, @Path("id") long bookID);
 
     @POST("truyen/{id}/dang_truyen")
-    Call<Void> postBook(@Body Book book, @Path("id") long userID);
+    Call<Book> postBook(@Body Book book, @Path("id") long userID);
+
+    @POST("chuong/{bookId}")
+    Call<Chapter> createChapter(@Path("bookId") long bookId, @Body Chapter chapter);
 }

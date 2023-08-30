@@ -12,5 +12,5 @@
         android:id="@+id/img_avatar"
         android:icon="@drawable/ic_account"
         android:title=""
-        app:showAsAction="always" />
+        app:showAsAction="always"/>
 </menu>

@@ -19,18 +19,18 @@ public class ChapterController {
     @Autowired
     private ChapterService chapterService;
 
-    @PostMapping("{bookId}")
+    @PostMapping("/{bookId}")
     public ResponseEntity<?> createChapter(@PathVariable(value = "bookId") Long bookId, @Valid @RequestBody Chapter chapter) {
         return ResponseEntity.ok(chapterService.createChapter(bookId,chapter));
     }
 
-    @PutMapping("{bookId}/update-chapter/{chapterId}")
+    @PutMapping("/{bookId}/update-chapter/{chapterId}")
     public ResponseEntity<Chapter> updateChapter(@PathVariable(value = "bookId") Long bookId, @PathVariable(value = "chapterId") Long chapterId,
                                            @Valid @RequestBody Chapter chapterDetails) throws Exception {
         return (ResponseEntity.ok(chapterService.updateChapter(bookId, chapterId, chapterDetails)));
     }
 
-    @DeleteMapping("{bookId}/delete-chapter/{chapterId}")
+    @DeleteMapping("/{bookId}/delete-chapter/{chapterId}")
     public Map<String, Boolean> deleteChapter(@PathVariable(value = "bookId") Long bookId, @PathVariable(value = "chapterId") Long chapterId)
             throws Exception {
         return chapterService.deleteChapter(bookId, chapterId);

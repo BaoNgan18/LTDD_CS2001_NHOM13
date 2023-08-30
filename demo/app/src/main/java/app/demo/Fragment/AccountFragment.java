@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,6 +41,7 @@ public class AccountFragment extends Fragment {
     List<Book> listFavBook, listUploadBook;
     ImageButton btnLogout;
     User user;
+    Toolbar mToolBar;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,8 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -61,10 +66,10 @@ public class AccountFragment extends Fragment {
 
         imgUserAvatar = view.findViewById(R.id.img_user_avatar);
         tvUserName = view.findViewById(R.id.tv_user_name);
-//        rcvFavBook = view.findViewById(R.id.rcv_fav_book);
-//        rcvUploadBook = view.findViewById(R.id.rcv_upload_book);
-//        tvTitleUp = view.findViewById(R.id.title_up);
-//        tvTitleFav = view.findViewById(R.id.title_fav);
+        rcvFavBook = view.findViewById(R.id.rcv_fav_book);
+        rcvUploadBook = view.findViewById(R.id.rcv_upload_book);
+        tvTitleUp = view.findViewById(R.id.tv_title_up);
+        tvTitleFav = view.findViewById(R.id.tv_title_fav);
         btnLogout = view.findViewById(R.id.btn_logout);
         btnLogout.setBackground(null);
 
@@ -72,15 +77,19 @@ public class AccountFragment extends Fragment {
         imgUserAvatar.setImageResource(R.drawable.r);
 
 
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
-//        rcvFavBook.setLayoutManager(linearLayoutManager);
-//        rcvUploadBook.setLayoutManager(linearLayoutManager);
-//        listFavBook = new ArrayList<>();
-//        getListFavBook(user.getId());
-//        listUploadBook = new ArrayList<>();
-//        getBook(user.getId());
-//        rcvFavBook.setVisibility(View.GONE);
-//        rcvUploadBook.setVisibility(View.GONE);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager linearLayout = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rcvFavBook.setLayoutManager(linearLayoutManager);
+        rcvUploadBook.setLayoutManager(linearLayout);
+        listFavBook = new ArrayList<>();
+        getListFavBook(user.getId());
+        listUploadBook = new ArrayList<>();
+        getBook(user.getId());
+        rcvFavBook.setVisibility(View.GONE);
+        rcvUploadBook.setVisibility(View.GONE);
+        tvTitleUp.setVisibility(View.GONE);
+        tvTitleFav.setVisibility(View.GONE);
+
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,10 +110,13 @@ public class AccountFragment extends Fragment {
         APIService.API_SERVICE.getListFavoriteBookByUser(id).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-                rcvFavBook.setVisibility(View.VISIBLE);
-                listFavBook.addAll(response.body());
-                BookAdapter bookAdapter = new BookAdapter(listFavBook);
-                rcvFavBook.setAdapter(bookAdapter);
+                if(response.isSuccessful()){
+                    tvTitleFav.setVisibility(View.VISIBLE);
+                    rcvFavBook.setVisibility(View.VISIBLE);
+                    listFavBook.addAll(response.body());
+                    BookAdapter bookAdapter = new BookAdapter(listFavBook);
+                    rcvFavBook.setAdapter(bookAdapter);
+                }
             }
 
             @Override
@@ -118,10 +130,13 @@ public class AccountFragment extends Fragment {
         APIService.API_SERVICE.getBookByUser(id).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-                rcvUploadBook.setVisibility(View.VISIBLE);
-                listUploadBook.addAll(response.body());
-                BookAdapter bookAdapter = new BookAdapter(listUploadBook);
-                rcvUploadBook.setAdapter(bookAdapter);
+                if(response.isSuccessful()){
+                    tvTitleUp.setVisibility(View.VISIBLE);
+                    rcvUploadBook.setVisibility(View.VISIBLE);
+                    listUploadBook.addAll(response.body());
+                    BookAdapter bookAdapter = new BookAdapter(listUploadBook);
+                    rcvUploadBook.setAdapter(bookAdapter);
+                }
             }
 
             @Override

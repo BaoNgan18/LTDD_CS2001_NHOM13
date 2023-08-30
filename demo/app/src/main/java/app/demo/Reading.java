@@ -49,6 +49,7 @@ public class Reading extends AppCompatActivity {
     Spinner spChapter;
     Book book;
     MaterialToolbar navBar;
+    int pos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class Reading extends AppCompatActivity {
 
         chapter = (Chapter) getIntent().getSerializableExtra("chapter");
         book = (Book) getIntent().getSerializableExtra("book");
+        pos = getIntent().getIntExtra("position", 0);
+        Log.d("Error", "position "+ pos);
 
 
         tvNameChapter = findViewById(R.id.tv_name_chapter);
@@ -75,11 +78,7 @@ public class Reading extends AppCompatActivity {
 
         listChapter = new ArrayList<>();
         getAllChaptersByBook(book.getId());
-        ListIterator<Chapter> listIterator = listChapter.listIterator();
-        Iterator<Chapter> iChapter = listChapter.stream().iterator();
-//
-//        int currentPosition = listIterator.nextIndex();
-//        Chapter currentChapter = listChapter.get(currentPosition);
+
 
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,42 +94,40 @@ public class Reading extends AppCompatActivity {
                 if (i1 < i3)
                     navBar.setVisibility(View.VISIBLE);
                 else if (i1 > i3)
-                    navBar.setVisibility(View.GONE);
-//                int scrollViewHeight = nsvReading.getHeight();
-//                int contentHeight = nsvReading.getChildAt(0).getHeight();
-//                int scrollY = nsvReading.getScrollY();
-//
-//                if (scrollY + scrollViewHeight >= contentHeight) {
-//                    if(listIterator.hasNext())
-//                        Toast.makeText(getApplicationContext(), "Bạn đã đọc hết", Toast.LENGTH_SHORT).show();
-//                    else
-//                } else {
-//                    // Chưa cuộn đến cuối nội dung
-//                }
-            }
+                    navBar.setVisibility(View.GONE);}
         });
 
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Chapter nextChapter = nextChapter(listChapter, chapter);
-                Log.d("Error", nextChapter.toString());
-                disPlayChapter(nextChapter);
+                pos++;
+                Log.d("PositionNext", String.valueOf(pos));
+                if(pos==listChapter.size()){
+                    btnNext.setEnabled(false);
+                    btnNext.setClickable(false);
+                }
+                else
+                {
+                    Chapter nextChapter = listChapter.get(pos);
+                    disPlayChapter(nextChapter);
+                }
             }
         });
 
         btnPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listIterator.hasPrevious()){
-                    btnNext.setClickable(true);
-                    Chapter previousChapter = listIterator.previous();
-                    disPlayChapter(previousChapter);
+                pos--;
+                Log.d("PositionPre", String.valueOf(pos));
+                if(pos==0){
+                    btnPrevious.setEnabled(false);
+                    btnPrevious.setClickable(false);
                 }
-                else {
-                    Log.d("Error", "khong qua previous");
-                    btnNext.setClickable(false);
+                else
+                {
+                    Chapter previousChapter = listChapter.get(pos);
+                    disPlayChapter(previousChapter);
                 }
             }
         });
@@ -155,7 +152,6 @@ public class Reading extends AppCompatActivity {
                         }
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {
-
                         }
                     });
                 }
@@ -169,15 +165,5 @@ public class Reading extends AppCompatActivity {
     public void disPlayChapter(Chapter chapter) {
         tvNameChapter.setText(chapter.getChapterName());
         tvContent.setText(chapter.getContent());
-    }
-
-    public Chapter nextChapter(List<Chapter> listChapter, Chapter currentChapter){
-        int currentIndex = listChapter.indexOf(currentChapter);
-
-        if (currentIndex != -1 && currentIndex < listChapter.size() - 1) {
-            return listChapter.get(currentIndex + 1);
-        }
-
-        return null;
     }
 }

@@ -53,6 +53,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
                 Log.d("Chapter", chapter.toString());
                 intent.putExtra("book", book);
                 intent.putExtra("chapter", chapter);
+                intent.putExtra("position", position);
                 view.getContext().startActivity(intent);
             }
         });

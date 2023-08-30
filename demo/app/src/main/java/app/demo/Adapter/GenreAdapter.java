@@ -1,6 +1,7 @@
 package app.demo.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,14 +42,11 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
     public void onBindViewHolder(@NonNull GenreViewHolder holder, int position) {
 
         Genre genre = genres.get(position);
-        if(genre.getListBook().isEmpty())
-        {
-            return;
-        }
-        holder.tvGenreName.setText(genre.getNameOfGenre());
-        getListBook(genre.getId());
-        BookAdapter bookAdapter = new BookAdapter(listBook);
-        holder.rcvBook.setAdapter(bookAdapter);
+
+            holder.tvGenreName.setText(genre.getNameOfGenre());
+            getListBook(genre.getId());
+            BookAdapter bookAdapter = new BookAdapter(listBook);
+            holder.rcvBook.setAdapter(bookAdapter);
     }
 
     @Override
@@ -77,7 +75,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
 
             @Override
             public void onFailure(Call<List<Book>> call, Throwable t) {
-                return;
+                Log.d("Error", t.getMessage());
             }
         });
     }

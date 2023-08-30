@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import app.demo.Fragment.AccountFragment;
 import app.demo.Fragment.HomeFragment;
 import app.demo.Fragment.LibraryFragment;
-import app.demo.Fragment.WritingFragment;
+import app.demo.Fragment.PostFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
@@ -26,7 +26,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new LibraryFragment();
             case 2:
-                return new WritingFragment();
+                return new PostFragment();
             case 3:
                 return new AccountFragment();
             default:

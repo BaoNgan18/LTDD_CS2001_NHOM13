@@ -173,15 +173,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        int itemId = item.getItemId();
-        if (itemId == R.id.img_avatar) {
-            getSupportFragmentManager().beginTransaction().add(R.id.main, new AccountFragment()).commit();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

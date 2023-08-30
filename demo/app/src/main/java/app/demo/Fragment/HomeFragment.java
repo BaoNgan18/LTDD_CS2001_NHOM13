@@ -30,6 +30,7 @@ public class HomeFragment extends Fragment {
 
     RecyclerView rcvBook;
     List<Book> listBook;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,8 +39,27 @@ public class HomeFragment extends Fragment {
         rcvBook = view.findViewById(R.id.rcv_book);
         rcvBook.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
         listBook = new ArrayList<>();
-        CallAPI(13);
+        getListBook();
+//        CallAPI(13);
         return view;
+    }
+
+    private void getListBook() {
+        APIService.API_SERVICE.getListBook().enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                if(response.isSuccessful()){
+                    listBook.addAll(response.body());
+                    BookAdapter bookAdapter = new BookAdapter(listBook);
+                    rcvBook.setAdapter(bookAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
+                Log.d("Error", t.getMessage());
+            }
+        });
     }
 
 //        public void CallAPI() {
@@ -59,19 +79,19 @@ public class HomeFragment extends Fragment {
 //            }
 //        });
 //    }
-    public void CallAPI(long genreID) {
-        APIService.API_SERVICE.getBookByGenre(genreID).enqueue(new Callback<List<Book>>() {
-            @Override
-            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-                listBook.addAll(response.body());
-                BookAdapter bookAdapter = new BookAdapter(listBook);
-                rcvBook.setAdapter(bookAdapter);
-            }
-            @Override
-            public void onFailure(Call<List<Book>> call, Throwable t) {
-                Log.d("Error", t.getMessage());
-                Toast.makeText(getView().getContext(), "That bai",Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    public void CallAPI(long genreID) {
+//        APIService.API_SERVICE.getBookByGenre(genreID).enqueue(new Callback<List<Book>>() {
+//            @Override
+//            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+//                listBook.addAll(response.body());
+//                BookAdapter bookAdapter = new BookAdapter(listBook);
+//                rcvBook.setAdapter(bookAdapter);
+//            }
+//            @Override
+//            public void onFailure(Call<List<Book>> call, Throwable t) {
+//                Log.d("Error", t.getMessage());
+//                Toast.makeText(getView().getContext(), "That bai",Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 }
