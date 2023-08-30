@@ -2,9 +2,7 @@ package com.example.apiroy.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,13 +21,11 @@ public class User {
 
     @Column (name = "ten_nguoi_dung", nullable = false)
     private String userName;
-
-//    @JsonIgnore
-    @Column (name = "mat_khau", nullable = false)
-    private String password;
-
     @Column (name = "email", nullable = false)
     private String email;
+
+    @Column (name = "mat_khau", nullable = false)
+    private String password;
 
     @JsonIgnore //loi parse nen tam che lai
     @Column (name = "ngay_tao", nullable = false)

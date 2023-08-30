@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -120,6 +121,25 @@ public class UserServiceImpl implements UserService {
 
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User loginAccount(User account) throws Exception {
+        try {
+            if (userRepository.findByEmail(account.getEmail()) != null) {
+                System.out.println("[DEBUG] - " + account);
+                Optional<User> accountEntity = userRepository.loginAccount(account.getEmail(), account.getPassword());
+                if (accountEntity.isPresent()) {
+                    return account;
+                } else {
+                    throw new Exception("Wrong password!");
+                }
+            } else {
+                throw new Exception("Email not found!");
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
 }

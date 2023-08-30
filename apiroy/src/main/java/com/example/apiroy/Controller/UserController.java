@@ -98,4 +98,14 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PostMapping(path = "/login")
+    public ResponseEntity<?> loginAccount(@RequestBody User user) throws Exception {
+        try {
+            System.out.println("[DEBUG] - " + user);
+            return ResponseEntity.ok().body(userService.loginAccount(user));
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
