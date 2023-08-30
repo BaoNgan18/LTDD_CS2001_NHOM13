@@ -29,4 +29,6 @@ public interface UserService {
     Book removeBookFromFavorites(Long userId,Long bookId) throws Exception;
 
     User findUserByEmail(String email);
+
+    User loginAccount(User account) throws Exception;
 }
