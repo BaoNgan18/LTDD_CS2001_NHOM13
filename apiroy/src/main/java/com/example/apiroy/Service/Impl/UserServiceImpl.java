@@ -108,8 +108,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new Exception("Book not found: " + bookId));
 
         if (user.getListFavoriteBook().contains(book)) {
-            System.out.println("[DEBUG] - User: " + user);
-            System.out.println("[DEBUG] - Book: " + book);
             user.getListFavoriteBook().remove(book);
             book.getListUserPressingLove().remove(user);
             userRepository.save(user);

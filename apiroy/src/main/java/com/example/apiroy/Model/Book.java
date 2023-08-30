@@ -46,7 +46,6 @@ public class Book {
     @OneToMany(mappedBy = "book")
     List<Chapter> listChapter;
 
-
     @JsonIgnore
     @ManyToMany
     @JoinTable(

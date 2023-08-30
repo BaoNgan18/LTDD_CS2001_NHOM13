@@ -76,11 +76,11 @@ public class UserController {
         }
     }
 
-
-    @DeleteMapping("/{userId}/xoayeuthich/{bookId}")
-    public ResponseEntity<Void> removeBookFromFavorites(@PathVariable(value = "userId") Long userId,@PathVariable(value = "bookId") Long bookId) {
+    @DeleteMapping("{userId}/xoayeuthich/{bookId}")
+    public ResponseEntity<Void> removeBookFromFavorites(@PathVariable(value = "bookId") Long bookId,
+                                                                       @PathVariable(value = "userId") Long userId) {
         try {
-            userService.removeBookFromFavorites(bookId, userId);
+            userService.removeBookFromFavorites(userId, bookId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
