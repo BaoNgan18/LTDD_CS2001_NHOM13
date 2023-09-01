@@ -84,7 +84,7 @@ public class RegisterFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(getContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+                        Log.d("Error", t.getMessage());
                     }
                 });
             }

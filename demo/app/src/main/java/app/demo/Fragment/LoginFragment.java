@@ -63,6 +63,7 @@ public class LoginFragment extends Fragment {
                 strEmail = edtEmail.getText().toString();
                 strPassword = edtPassWord.getText().toString();
                 User us = new User(strPassword, strEmail, "");
+                Log.d("User", us.toString());
 
                 loginAccount(us);
             }
