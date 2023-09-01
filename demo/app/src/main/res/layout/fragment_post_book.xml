@@ -1,100 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frm_postBook"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.PostBook"
     android:orientation="vertical"
-    android:id="@+id/frm_postBook">
+    tools:context=".PostBook">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Hủy bỏ"/>
+        <TextView
+            android:id="@+id/tv_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginLeft="290dp"
+            android:text="Đăng"/>
+    </androidx.appcompat.widget.Toolbar>
 
 
-    <!--    <ImageView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="150dp"-->
-    <!--        android:id="@+id/img_post_cover"-->
-    <!--        android:background="@color/gray"-->
-    <!--        android:src="@drawable/ic_add"-->
-    <!--        android:tooltipText="Thêm ảnh bìa"/>-->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:text="Thông tin truyện"
-        android:textSize="25sp"
-        android:textStyle="bold"
         android:textAlignment="center"
-        android:layout_marginTop="20dp"/>
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/img_post_cover"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/gray"
+        android:src="@drawable/icoutline_image"
+        android:tooltipText="Chọn ảnh bìa từ thiết bị" />
+
+
     <EditText
-        android:layout_marginTop="12dp"
-        android:id="@+id/edt_name_book"
+        android:id="@+id/edt_namePost"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="12dp"
         android:background="@color/white"
         android:hint="Tên truyện"
         android:inputType="text"
         android:paddingStart="4dp"
-        android:textSize="18dp"
-        android:layout_marginLeft="8dp"/>
+        android:textSize="18dp" />
 
     <View
-        android:paddingStart="4dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_gravity="center"
-        android:background="@color/black"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="12dp"/>
-    <EditText
         android:layout_marginTop="12dp"
-        android:id="@+id/edt_genre"
+        android:background="@color/black"
+        android:paddingStart="4dp" />
+
+    <EditText
+        android:id="@+id/edt_genrePost"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="12dp"
         android:background="@color/white"
         android:hint="Thể loại"
         android:inputType="textMultiLine"
         android:paddingStart="4dp"
-        android:textSize="18dp"
-        android:layout_marginLeft="8dp"/>
+        android:textSize="18dp" />
 
     <View
-        android:paddingStart="4dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_gravity="center"
-        android:background="@color/black"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="12dp"/>
-    <EditText
         android:layout_marginTop="12dp"
-        android:id="@+id/edt_describe"
+        android:background="@color/black"
+        android:paddingStart="4dp" />
+
+    <EditText
+        android:id="@+id/edt_describePost"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="12dp"
         android:background="@color/white"
         android:hint="Mô tả truyện"
         android:inputType="textMultiLine"
         android:paddingStart="4dp"
-        android:textSize="18dp"
-        android:layout_marginLeft="8dp"/>
+        android:textSize="18dp" />
 
     <View
-        android:paddingStart="4dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_gravity="center"
-        android:background="@color/black"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="12dp"
+        android:background="@color/black"
+        android:paddingStart="4dp" />
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/btn_submitPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/green"
         android:text="Đăng truyện"
-        android:textColor="@color/white"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
+        android:textColor="@color/white" />
 </LinearLayout>

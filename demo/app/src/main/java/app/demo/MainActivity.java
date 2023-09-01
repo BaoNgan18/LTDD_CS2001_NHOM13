@@ -5,37 +5,29 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import app.demo.API.APIService;
 import app.demo.Adapter.BookAdapter;
+import app.demo.Adapter.GenreAdapter;
 import app.demo.Adapter.ViewPagerAdapter;
-import app.demo.Fragment.AccountFragment;
-import app.demo.Fragment.LoadFragment;
-import app.demo.Fragment.SearchFragment;
 import app.demo.model.Book;
-import app.demo.model.Genre;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     List<Book> listBook;
     RecyclerView rcvResult;
     BookAdapter bookAdapter;
+    GenreAdapter genreAdapter;
     View view;
 
     @Override
@@ -64,9 +57,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setIcon(R.drawable.r);
 
-        rcvResult = findViewById(R.id.rcv_search);
-        rcvResult.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        listBook = new ArrayList<>();
+//        rcvResult = findViewById(R.id.rcv_search);
+//        rcvResult.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+//        listBook = new ArrayList<>();
+//        getAllBook();
 
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
@@ -126,37 +120,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.img_avatar){
+            mViewPager.setCurrentItem(3);
+        } else if(item.getItemId() == R.id.search) {
+//            //            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+////            searchView = (SearchView) mToolBar.findViewById(R.id.search);
+////            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+            Intent intent = new Intent(MainActivity.this, Search.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_menu, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        rcvResult = findViewById(R.id.rcv_search);
-        view = findViewById(R.id.view);
-//        rcvResult.setVisibility(View.GONE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                getAllBook();
-                view.setVisibility(View.VISIBLE);
-                bookAdapter = new BookAdapter(listBook);
-                rcvResult.setAdapter(bookAdapter);
-                bookAdapter.getFilter().filter(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                getAllBook();
-                view.setVisibility(View.VISIBLE);
-                bookAdapter = new BookAdapter(listBook);
-                rcvResult.setAdapter(bookAdapter);
-                bookAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
         return true;
     }
 
@@ -165,6 +147,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 listBook.addAll(response.body());
+                bookAdapter = new BookAdapter(listBook);
+                rcvResult.setAdapter(bookAdapter);
+                Log.d("Error", String.valueOf(listBook.size()));
             }
 
             @Override

@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         rcvBook = view.findViewById(R.id.rcv_book);
-        rcvBook.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        rcvBook.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
         listBook = new ArrayList<>();
         getListBook();
 //        CallAPI(13);

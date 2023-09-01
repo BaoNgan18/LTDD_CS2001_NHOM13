@@ -40,13 +40,13 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long id,
                                            @Valid @RequestBody User userDetails) throws Exception {
         return ResponseEntity.ok(userService.updateUser(id, userDetails));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long id)
             throws Exception {
         return userService.deleteUser(id);
@@ -57,7 +57,7 @@ public class UserController {
         return userService.getListFavoriteBookByUser(id);
     }
 
-    @GetMapping("{id}/truyen/")
+    @GetMapping("/{id}/truyen/")
     public List<Book> getBookByUser(@PathVariable(value = "id") Long id) {
         return userService.getBookByUser(id);
     }

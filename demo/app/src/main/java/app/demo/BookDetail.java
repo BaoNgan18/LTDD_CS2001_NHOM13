@@ -26,6 +26,7 @@ import java.util.ListIterator;
 import app.demo.API.APIService;
 import app.demo.Adapter.BookAdapter;
 //import app.demo.Adapter.ChapterAdapter;
+import app.demo.Adapter.BookVerticalAdapter;
 import app.demo.Adapter.ChapterAdapter;
 import app.demo.model.Book;
 import app.demo.model.Chapter;
@@ -61,6 +62,7 @@ public class BookDetail extends AppCompatActivity {
         }
 
         book = (Book) getIntent().getSerializableExtra("book");
+        Log.d("BookInfo", book.toString());
 
         //ánh xạ các item
         imgCover =findViewById(R.id.img_cover);
@@ -80,7 +82,7 @@ public class BookDetail extends AppCompatActivity {
         tvBookName.setText(book.getNameBook());
         tvGenre.setText("Thể loại: "+sb.toString());
         tvAuthor.setText("Tác giả: "+book.getUser().getUserName());
-        tvDescribe.setText("Không có mô tả");
+        tvDescribe.setText(book.getDescribe().toString());
         Glide.with(getApplicationContext()).load(book.getCoverImg()).into(imgCover);
         Glide.with(getApplicationContext()).load(book.getCoverImg()).into(imgBigCover);
 
@@ -187,7 +189,7 @@ public class BookDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 listBook.addAll(response.body());
-                BookAdapter bookAdapter = new BookAdapter(listBook);
+                BookVerticalAdapter bookAdapter = new BookVerticalAdapter(listBook);
                 rcvBook.setAdapter(bookAdapter);
             }
 

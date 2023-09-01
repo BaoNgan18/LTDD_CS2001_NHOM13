@@ -1,6 +1,7 @@
 package app.demo.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -15,9 +16,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -27,6 +30,8 @@ import java.util.List;
 
 import app.demo.API.APIService;
 import app.demo.Adapter.BookAdapter;
+import app.demo.PostBook;
+import app.demo.PostChapter;
 import app.demo.R;
 import app.demo.model.Book;
 import app.demo.model.User;
@@ -40,6 +45,8 @@ public class PostFragment extends Fragment {
     RecyclerView rcvPost;
     List<Book> books;
     User user;
+    TextView tv;
+    Book book;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,12 +63,9 @@ public class PostFragment extends Fragment {
             user = gson.fromJson(userJson, User.class);
         }
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
-//        String path;
-
         rcvPost = view.findViewById(R.id.rcv_post);
         btnAdd = view.findViewById(R.id.add_new);
+        tv = view.findViewById(R.id.textView);
 
         books = new ArrayList<>();
         getBookByUser(user.getId());
@@ -69,15 +73,18 @@ public class PostFragment extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getChildFragmentManager().beginTransaction().replace(R.id.frm_post, new PostBook()).commit();
+                Intent intent = new Intent(getView().getContext(), PostBook.class);
+                startActivity(intent);
             }
         });
 
-
-//        imgCoverBook.setOnClickListener(new View.OnClickListener() {
+//        rcvPost.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 //            @Override
-//            public void onClick(View view) {
-//                postCoverImg();
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                book = (Book) adapterView.getItemAtPosition(i);
+//                Intent intent = new Intent(getView().getContext(), PostChapter.class);
+//                intent.putExtra("Book", book);
+//                startActivity(intent);
 //            }
 //        });
 
@@ -90,9 +97,15 @@ public class PostFragment extends Fragment {
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 if(response.isSuccessful()){
                     books.addAll(response.body());
-                    BookAdapter bookAdapter = new BookAdapter(books);
-                    rcvPost.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-                    rcvPost.setAdapter(bookAdapter);
+                    if(books.isEmpty()){
+                        rcvPost.setVisibility(View.GONE);
+                    }
+                    else{
+                        tv.setText("Các truyện đã đăng");
+                        BookAdapter bookAdapter = new BookAdapter(books);
+                        rcvPost.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                        rcvPost.setAdapter(bookAdapter);
+                    }
                 }
             }
             @Override

@@ -33,11 +33,11 @@ public class User {
 
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "listUserPressingLove")
+    @ManyToMany(cascade = CascadeType.REMOVE, mappedBy = "listUserPressingLove")
     private List<Book> listFavoriteBook;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     private List<Book> listBooks;
 
     public User(String username, String password, String email) {

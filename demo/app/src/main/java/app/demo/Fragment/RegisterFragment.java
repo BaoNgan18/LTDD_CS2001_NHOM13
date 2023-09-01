@@ -69,7 +69,9 @@ public class RegisterFragment extends Fragment {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         if (response.isSuccessful()) {
+                            Log.d("Error", response.toString());
                             user = response.body();
+                            Log.d("Error", user.toString());
                             if (user != null) {
                                 tvMessage.setVisibility(View.VISIBLE);
                                 tvMessage.setText("Email đã tồn tại");
@@ -106,7 +108,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    Log.d("Error", "Success");
+                    Log.d("Error", "Create User Success");
                 }
             }
 

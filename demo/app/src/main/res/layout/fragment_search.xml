@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frm_search"
-    tools:context=".Fragment.SearchFragment">
+    tools:context=".Search"
+    android:background="@drawable/bg_card"
+    android:backgroundTint="@color/white">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/top_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_2"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:menu="@menu/top_menu"/>
+
     <androidx.recyclerview.widget.RecyclerView
+
         android:id="@+id/rcv_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_nav"
+        android:layout_marginTop="20dp"/>
 
-</FrameLayout>
+</RelativeLayout>

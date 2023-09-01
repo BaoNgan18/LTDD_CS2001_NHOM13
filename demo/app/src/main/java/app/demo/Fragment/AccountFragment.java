@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import app.demo.API.APIService;
 import app.demo.Adapter.BookAdapter;
 import app.demo.LoginActivity;
 import app.demo.R;
+import app.demo.UpdateUser;
 import app.demo.model.Book;
 import app.demo.model.User;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -39,7 +41,7 @@ public class AccountFragment extends Fragment {
     private TextView tvUserName, tvTitleUp, tvTitleFav;
     private RecyclerView rcvFavBook, rcvUploadBook;
     List<Book> listFavBook, listUploadBook;
-    ImageButton btnLogout;
+    ImageButton btnSetting;
     User user;
     Toolbar mToolBar;
 
@@ -52,8 +54,6 @@ public class AccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String userJson = sharedPreferences.getString("user", "");
@@ -62,7 +62,10 @@ public class AccountFragment extends Fragment {
         } else {
             Gson gson = new Gson();
             user = gson.fromJson(userJson, User.class);
+            Log.d("Error", user.toString());
         }
+
+
 
         imgUserAvatar = view.findViewById(R.id.img_user_avatar);
         tvUserName = view.findViewById(R.id.tv_user_name);
@@ -70,8 +73,9 @@ public class AccountFragment extends Fragment {
         rcvUploadBook = view.findViewById(R.id.rcv_upload_book);
         tvTitleUp = view.findViewById(R.id.tv_title_up);
         tvTitleFav = view.findViewById(R.id.tv_title_fav);
-        btnLogout = view.findViewById(R.id.btn_logout);
-        btnLogout.setBackground(null);
+        btnSetting = view.findViewById(R.id.btn_setting);
+        btnSetting.setBackground(null);
+
 
         tvUserName.setText(user.getUserName());
         imgUserAvatar.setImageResource(R.drawable.r);
@@ -90,21 +94,18 @@ public class AccountFragment extends Fragment {
         tvTitleUp.setVisibility(View.GONE);
         tvTitleFav.setVisibility(View.GONE);
 
-
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editor.remove("user");
-                editor.remove("isLogged");
-                editor.apply();
-
-                Intent intent = new Intent(getContext(), LoginActivity.class);
+                Intent intent = new Intent(getView().getContext(), UpdateUser.class);
                 startActivity(intent);
             }
         });
 
         return view;
     }
+
+
 
     public void getListFavBook(long id) {
         APIService.API_SERVICE.getListFavoriteBookByUser(id).enqueue(new Callback<List<Book>>() {

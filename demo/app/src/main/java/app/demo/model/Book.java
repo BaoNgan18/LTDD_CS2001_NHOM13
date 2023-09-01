@@ -26,11 +26,13 @@ public class Book implements Serializable {
         this.setListGenre(listGenre);
     }
 
-    public Book(String nameBook, User user, String describe) {
+    public Book(String nameBook, List<Genre> genre, String describe, User user) {
         this.nameBook = nameBook;
-        this.user = user;
+        this.listGenre = genre;
         this.describe = describe;
+        this.user = user;
     }
+    public Book(){};
 
     public Long getId() {
         return id;
@@ -109,6 +111,9 @@ public class Book implements Serializable {
         return "Book{" +
                 "id=" + id +
                 ", nameBook='" + nameBook + '\'' +
+                ", listGenre=" + listGenre +
+                ", user=" + user +
+                ", describe='" + describe + '\'' +
                 '}';
     }
 }

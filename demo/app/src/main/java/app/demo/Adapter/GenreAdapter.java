@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.demo.API.APIService;
@@ -24,11 +27,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHolder> {
-    private final List<Genre> genres;
+    private List<Genre> genres, tempList;
     List<Book> listBook;
 
     public GenreAdapter(List<Genre> genres) {
         this.genres = genres;
+        this.tempList = genres;
     }
 
     @NonNull
@@ -79,4 +83,6 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
             }
         });
     }
+
+
 }

@@ -5,12 +5,14 @@ import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import app.demo.model.Book;
 import app.demo.model.Chapter;
 import app.demo.model.Genre;
 import app.demo.model.User;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,6 +23,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -28,7 +31,7 @@ import retrofit2.http.Query;
 public interface APIService {
     Gson gson = new GsonBuilder().create();
     APIService API_SERVICE = new Retrofit.Builder()
-            .baseUrl("http://192.168.10.182:8080/api/")
+            .baseUrl("http://192.168.1.10:8080/api/")
 //            .baseUrl("http://192.168.0.9:8080/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(APIService.class);
@@ -69,12 +72,30 @@ public interface APIService {
     @DELETE("nguoidung/{userId}/xoayeuthich/{bookId}")
     Call<Void> removeBookFromFavorites(@Path("userId") long userID, @Path("bookId") long bookID);
 
+    @Multipart
     @POST("truyen/{id}/dang-anh")
-    Call<Void> postCoverImg(@Part MultipartBody.Part filePart, @Path("id") long bookID);
+    Call<Book> postCoverImg(@Part MultipartBody.Part file, @Path("id") long bookID);
 
     @POST("truyen/{id}/dang_truyen")
     Call<Book> postBook(@Body Book book, @Path("id") long userID);
 
     @POST("chuong/{bookId}")
     Call<Chapter> createChapter(@Path("bookId") long bookId, @Body Chapter chapter);
+
+    @DELETE("chuong/{bookId}/delete-chapter/{chapterId}")
+    Call<Boolean> deleteChapter(@Path("bookId") long bookID, @Path("userId") long userID);
+
+    @PUT("chuong/{bookId}/update-chapter/{chapterId}")
+    Call<Chapter> updateChapter(@Path(value = "bookId") Long bookId, @Path(value = "chapterId") Long chapterId, @Body Chapter chapterDetails);
+
+    @DELETE("truyen/{id}")
+    Call<Map<String, Boolean>> deleteBook(@Path(value = "id") Long id);
+    @PUT("truyen/{id}/cap-nhat-truyen")
+    Call<Book> updateBook(@Path(value = "id") Long id, @Body Book bookDetails);
+
+    @PUT("nguoidung/{id}")
+    Call<User> updateUser(@Path("id") long userID, @Body User user);
+
+    @DELETE("nguoidung/{id}")
+    Call<Map<String, Boolean>> deleteUser(@Path("id") long userID);
 }

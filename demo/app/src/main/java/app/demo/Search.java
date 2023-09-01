@@ -1,58 +1,72 @@
-package app.demo.Fragment;
+package app.demo;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.demo.API.APIService;
 import app.demo.Adapter.BookAdapter;
-import app.demo.R;
 import app.demo.model.Book;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchFragment extends Fragment {
+public class Search extends AppCompatActivity {
 
     List<Book> listBook;
     RecyclerView rcvResult;
     SearchView searchView;
+    Toolbar mToolBar;
+    BookAdapter bookAdapter;
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
-        rcvResult = view.findViewById(R.id.rcv_search);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_search);
+
+        rcvResult = findViewById(R.id.rcv_search);
         listBook = new ArrayList<>();
+        rcvResult.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         getAllBook();
-        BookAdapter bookAdapter = new BookAdapter(listBook);
+        bookAdapter = new BookAdapter(listBook);
+        rcvResult.setAdapter(bookAdapter);
+
+        mToolBar = findViewById(R.id.top_nav);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_menu, menu);
+
+        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 bookAdapter.getFilter().filter(query);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 bookAdapter.getFilter().filter(newText);
                 return false;
             }
         });
-
-        return view;
+        return true;
     }
 
     private void getAllBook() {
@@ -64,9 +78,8 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Book>> call, Throwable t) {
-                Toast.makeText(getView().getContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+                Log.d("ErrorSearch", t.getMessage());
             }
         });
     }
-
 }

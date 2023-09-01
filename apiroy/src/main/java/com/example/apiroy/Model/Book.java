@@ -43,7 +43,7 @@ public class Book {
     private String describe;
 
 //    @JsonIgnore
-    @OneToMany(mappedBy = "book")
+    @OneToMany(cascade = CascadeType.REMOVE , mappedBy = "book")
     List<Chapter> listChapter;
 
     @JsonIgnore

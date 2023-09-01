@@ -32,37 +32,37 @@ public class BookController {
         return ResponseEntity.ok().body(bookService.getAllBook());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Book> getBookByID(@PathVariable(value = "id") Long id)
             throws Exception {
 
         return ResponseEntity.ok().body(bookService.getBookByID(id));
     }
 
-    @PostMapping("{id}/dang_truyen")
+    @PostMapping("/{id}/dang_truyen")
     public ResponseEntity<?> postBook(@Valid @RequestBody Book book, @PathVariable(value = "id") Long userId) {
         Book bookMoi = bookService.postBook(book, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(bookMoi);
     }
 
-    @PutMapping("{id}/cap-nhat-truyen")
+    @PutMapping("/{id}/cap-nhat-truyen")
     public ResponseEntity<Book> updateBook(@PathVariable(value = "id") Long id,
                                              @Valid @RequestBody Book bookDetails) throws Exception {
         return ResponseEntity.ok(bookService.updateBook(id, bookDetails));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public Map<String, Boolean> deleteBook(@PathVariable(value = "id") Long id)
             throws Exception {
         return bookService.deleteBook(id);
     }
 
-    @GetMapping("{id}/chuong/")
+    @GetMapping("/{id}/chuong/")
     public List<Chapter> getAllChaptersByBook(@PathVariable(value = "id") Long id) {
         return bookService.getAllChaptersByBook(id);
     }
 
-    @PostMapping("{id}/dang-anh")
+    @PostMapping("/{id}/dang-anh")
     public ResponseEntity<?>  postCoverImg(@RequestParam("file") MultipartFile file, @PathVariable Long id){
         try {
             Book book = bookService.postCoverImg(file, id);
