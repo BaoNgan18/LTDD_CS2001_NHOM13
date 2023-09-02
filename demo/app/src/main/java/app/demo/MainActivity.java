@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
                 } else if (id == R.id.menu_create) {
                     mViewPager.setCurrentItem(2);
                 } else if (id == R.id.menu_account) {
-                    mViewPager.setCurrentItem(3);
-                } else if (id == R.id.menu_search) {
                     mViewPager.setCurrentItem(4);
+                } else if (id == R.id.menu_search) {
+                    mViewPager.setCurrentItem(3);
                 }
                 return true;}
         });
@@ -102,10 +102,10 @@ public class MainActivity extends AppCompatActivity {
                     case 2:
                         mBotNav.getMenu().findItem(R.id.menu_create).setChecked(true);
                         break;
-                    case 3:
+                    case 4:
                         mBotNav.getMenu().findItem(R.id.menu_account).setChecked(true);
                         break;
-                    case 4:
+                    case 3:
                         mBotNav.getMenu().findItem(R.id.menu_search).setChecked(true);
                         break;
                     default:
