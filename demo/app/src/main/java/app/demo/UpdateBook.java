@@ -125,7 +125,6 @@ public class UpdateBook extends AppCompatActivity {
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
-        Log.d("Error", sb.toString());
         edtGenre.setText(sb);
 
         String coverImgUrl = oldBook.getCoverImg();
@@ -141,7 +140,8 @@ public class UpdateBook extends AppCompatActivity {
             public void onClick(View view) {
                 strName = edtNameBook.getText().toString();
                 strDescribe = edtDescribe.getText().toString();
-                newBook = new Book(strName, listGenre, strDescribe, user);
+
+                newBook = new Book(strName, mGenres, strDescribe, user);
                 updateBook(oldBook.getId(), newBook);
             }
         });
@@ -159,6 +159,8 @@ public class UpdateBook extends AppCompatActivity {
                 onClickRequestPermission();
             }
         });
+
+
     }
 
     private void updateBook(Long id, Book newBook) {
@@ -224,29 +226,30 @@ public class UpdateBook extends AppCompatActivity {
             public void onResponse(Call<List<Genre>> call, Response<List<Genre>> response) {
                 if (response.isSuccessful()) {
                     genres.addAll(response.body());
-                  if (genres.isEmpty()) {
-                        Log.d("Error", "khong co listChapter");
-                    } else {
-                        SpinnerGenres adapter = new SpinnerGenres(getApplicationContext(), R.layout.spinner_genre, genres);
-                        spGenre.setAdapter(adapter);
+                }if (genres.isEmpty()) {
+                    Log.d("Error", "khong co listChapter");
+                } else {
+                    SpinnerGenres adapter = new SpinnerGenres(getApplicationContext(), R.layout.spinner_genre, genres);
+                    spGenre.setAdapter(adapter);
 //                        spGenre.setSelection(0);
-                        spGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                {
-                                    Genre g = (Genre) spGenre.getItemAtPosition(i);
-                                    mGenres.add(g);
-                                    sb.append(", "+g.getNameOfGenre());
-                                    edtGenre.setText(sb.toString());
-                                }
-
+                    spGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            {
+                                StringBuilder a = new StringBuilder();
+                                Genre g = (Genre) spGenre.getItemAtPosition(i);
+                                mGenres.add(g);
+                                a.append(g.getNameOfGenre() + "    ");
+                                edtGenre.setText(a.toString());
                             }
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
 
-                            }
-                        });
-                    }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
                 }
             }
 

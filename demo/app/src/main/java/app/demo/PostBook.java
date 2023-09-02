@@ -87,6 +87,7 @@ public class PostBook extends AppCompatActivity {
     List<Genre> genres, listGenre, mGenres;
     Uri mUri;
     Spinner spGenre;
+    StringBuilder sb;
 
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -154,6 +155,41 @@ public class PostBook extends AppCompatActivity {
         });
     }
 
+    private void getListGenre() {
+        APIService.API_SERVICE.getAllGenre().enqueue(new Callback<List<Genre>>() {
+            @Override
+            public void onResponse(Call<List<Genre>> call, Response<List<Genre>> response) {
+                if(response.isSuccessful()){
+                    genres.addAll(response.body());
+
+                    SpinnerGenres adapter = new SpinnerGenres(getApplicationContext(), R.layout.spinner_genre, genres);
+                    spGenre.setAdapter(adapter);
+                    spGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            StringBuilder a = new StringBuilder();
+                            Genre g = (Genre) spGenre.getItemAtPosition(i);
+                            mGenres.add(g);
+                            a.append(g.getNameOfGenre() + " ");
+                            edtGenre.setText(a.toString());
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+                }else
+                    Log.d("Error", "load list genre failure");
+            }
+
+            @Override
+            public void onFailure(Call<List<Genre>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
     private void updateBook(Long id, Book newBook) {
         APIService.API_SERVICE.updateBook(id, newBook).enqueue(new Callback<Book>() {
             @Override
@@ -217,46 +253,6 @@ public class PostBook extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Book> call, Throwable t) {
-                Log.d("Error", t.getMessage());
-            }
-        });
-    }
-
-
-    private void getListGenre() {
-            APIService.API_SERVICE.getAllGenre().enqueue(new Callback<List<Genre>>() {
-            @Override
-            public void onResponse(Call<List<Genre>> call, Response<List<Genre>> response) {
-                if (response.isSuccessful()) {
-                    genres.addAll(response.body());
-
-                    if (genres.isEmpty()) {
-                        Log.d("Error", "khong co listChapter");
-                    } else {
-                        SpinnerGenres adapter = new SpinnerGenres(getApplicationContext(), R.layout.spinner_genre, genres);
-                        spGenre.setAdapter(adapter);
-//                        spGenre.setSelection(0);
-                        spGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                Genre g = (Genre) spGenre.getItemAtPosition(i);
-                                mGenres.add(g);
-                                edtGenre.setText(g.getNameOfGenre());
-                            }
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
-
-                            }
-                        });
-                    }
-                    Log.d("Error", "get success");
-                } else {
-                    Log.d("Error", "get failure");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Genre>> call, Throwable t) {
                 Log.d("Error", t.getMessage());
             }
         });
