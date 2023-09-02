@@ -26,6 +26,7 @@ import java.util.List;
 
 import app.demo.API.APIService;
 import app.demo.Adapter.BookAdapter;
+import app.demo.Adapter.BookVerticalAdapter;
 import app.demo.LoginActivity;
 import app.demo.R;
 import app.demo.UpdateUser;
@@ -53,6 +54,7 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
+
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -115,7 +117,7 @@ public class AccountFragment extends Fragment {
                     tvTitleFav.setVisibility(View.VISIBLE);
                     rcvFavBook.setVisibility(View.VISIBLE);
                     listFavBook.addAll(response.body());
-                    BookAdapter bookAdapter = new BookAdapter(listFavBook);
+                    BookVerticalAdapter bookAdapter = new BookVerticalAdapter(listFavBook);
                     rcvFavBook.setAdapter(bookAdapter);
                 }
             }
@@ -135,7 +137,7 @@ public class AccountFragment extends Fragment {
                     tvTitleUp.setVisibility(View.VISIBLE);
                     rcvUploadBook.setVisibility(View.VISIBLE);
                     listUploadBook.addAll(response.body());
-                    BookAdapter bookAdapter = new BookAdapter(listUploadBook);
+                    BookVerticalAdapter bookAdapter = new BookVerticalAdapter(listUploadBook);
                     rcvUploadBook.setAdapter(bookAdapter);
                 }
             }

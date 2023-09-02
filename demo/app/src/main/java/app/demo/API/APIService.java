@@ -31,7 +31,11 @@ import retrofit2.http.Query;
 public interface APIService {
     Gson gson = new GsonBuilder().create();
     APIService API_SERVICE = new Retrofit.Builder()
+<<<<<<< HEAD
             .baseUrl("http://192.168.0.5:8080/api/")
+=======
+            .baseUrl("http://192.168.1.12:8080/api/")
+>>>>>>> da04bc2129ce46b548789773e0ae32c22e16b928
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(APIService.class);
 
@@ -44,7 +48,7 @@ public interface APIService {
     Call<List<Book>> getBookByGenre(@Path("genreId") long genreId);
 
     @GET("theloai")
-    Call<List<Genre>> getListGenre();
+    Call<List<Genre>> getAllGenre();
 
     @GET("truyen/{bookID}/chuong/")
     Call<List<Chapter>> getAllChaptersByBook(@Path("bookID") long bookID);

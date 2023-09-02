@@ -40,7 +40,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
 //    public ChapterAdapter(List<Chapter> listChapter){
 //        this.listChapter = listChapter;
 //    }
-    private Book book;
+    private final Book book;
 
     public ChapterAdapter(Book book) {
         this.book = book;

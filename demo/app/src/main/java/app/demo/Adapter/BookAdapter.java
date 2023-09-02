@@ -48,6 +48,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     List<Genre> genres = new ArrayList<>();
     List<Book> listBook, tempList;
+
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -80,7 +81,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                 .into(holder.coverImg);
 
         StringBuilder sb = new StringBuilder();
-        book.getListGenre().forEach(t -> sb.append(t.getNameOfGenre()+", "));
+        book.getListGenre().forEach(t -> sb.append(t.getNameOfGenre() + ", "));
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
@@ -95,7 +96,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             }
         });
 
-        if(user.getId() == book.getUser().getId()){
+        if (user.getId() == book.getUser().getId()) {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -103,20 +104,18 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                     builder.setView(R.layout.dialog);
                     AlertDialog dialog = builder.show();
 
-
                     TextView update = dialog.findViewById(R.id.update);
                     TextView delete = dialog.findViewById(R.id.delete);
                     TextView add = dialog.findViewById(R.id.add);
-                        update.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(view.getContext(), UpdateBook.class);
-                                intent.putExtra("book", book);
-                                view.getContext().startActivity(intent);
-                                dialog.dismiss();
-                            }
-                        });
-
+                    update.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(view.getContext(), UpdateBook.class);
+                            intent.putExtra("book", book);
+                            view.getContext().startActivity(intent);
+                            dialog.dismiss();
+                        }
+                    });
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -146,10 +145,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         APIService.API_SERVICE.deleteBook(id).enqueue(new Callback<Map<String, Boolean>>() {
             @Override
             public void onResponse(Call<Map<String, Boolean>> call, Response<Map<String, Boolean>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Log.d("Error", "Delete book success");
-                }
-                else {
+                } else {
                     Log.d("Error", "Delete book failure");
                 }
             }
@@ -163,29 +161,42 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     @Override
     public int getItemCount() {
-        if(listBook != null)
+        if (listBook != null)
             return listBook.size();
         return 0;
     }
+
+//    public List<Book> filter(String key){
+//        listBook.clear();
+//        if(key.isEmpty()){
+//            listBook = tempList;
+//        } else {
+//            for(Book b: tempList) {
+//                if (b.getNameBook().toLowerCase().contains(key.trim().toLowerCase())
+//                        || b.getUser().getUserName().toLowerCase().contains(key.trim().toLowerCase()))
+//                    listBook.add(b);
+//            }
+//        }
+//        notifyDataSetChanged();
+//        return listBook;
+//    }
 
     @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                String strSearch = charSequence.toString();
-                if(strSearch.isEmpty()){
+                String str = charSequence.toString();
+                if (str.isEmpty()) {
                     listBook = tempList;
                 } else {
-                    List<Book> list = new ArrayList<>();
-                    for(Book book: tempList){
-                        if(book.getNameBook().toLowerCase().contains(strSearch.toLowerCase())
-                            || book.getUser().getUserName().toLowerCase().contains(strSearch.toLowerCase())
-                            || genres.contains(strSearch.trim()))
-                            list.add(book);
-
+                    List<Book> l = new ArrayList<>();
+                    for (Book b : tempList) {
+                        if (b.getNameBook().toLowerCase().contains(str.trim().toLowerCase())
+                                || b.getUser().getUserName().toLowerCase().contains(str.trim().toLowerCase()))
+                            l.add(b);
                     }
-                    listBook = list;
+                    listBook = l;
                 }
 
                 FilterResults filterResults = new FilterResults();
@@ -199,13 +210,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                 listBook = (List<Book>) filterResults.values;
                 notifyDataSetChanged();
             }
-
-
         };
     }
 
-    public static class BookViewHolder extends  RecyclerView.ViewHolder{
-        TextView nameBook, userName, listGenre;ImageView coverImg;
+    public static class BookViewHolder extends RecyclerView.ViewHolder {
+        TextView nameBook, userName, listGenre;
+        ImageView coverImg;
+
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
 //            idBook = itemView.findViewById(R.id.tv_id);
@@ -216,11 +227,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         }
     }
 
-    public void getListGenre(){
-        APIService.API_SERVICE.getListGenre().enqueue(new Callback<List<Genre>>() {
+    public void getListGenre() {
+        APIService.API_SERVICE.getAllGenre().enqueue(new Callback<List<Genre>>() {
             @Override
             public void onResponse(Call<List<Genre>> call, Response<List<Genre>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     genres.addAll(response.body());
                 }
             }

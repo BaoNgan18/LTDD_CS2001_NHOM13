@@ -32,7 +32,7 @@ public class Book implements Serializable {
         this.describe = describe;
         this.user = user;
     }
-    public Book(){};
+    public Book(){}
 
     public Long getId() {
         return id;

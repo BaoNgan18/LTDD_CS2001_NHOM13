@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frm_search"
-    tools:context=".Search"
+    tools:context=".Fragment.SearchFragment"
     android:background="@drawable/bg_card"
-    android:backgroundTint="@color/white">
+    android:backgroundTint="@color/white"
+    android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/top_nav"
+    <androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue_2"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:menu="@menu/top_menu"/>
+        android:id="@+id/search"
+        android:background="@drawable/bg_card"
+        android:backgroundTint="@color/gray"
+        android:layout_margin="6dp"
+        />
+    <Spinner
+        android:id="@+id/sp_genre"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_title"
+        android:layout_gravity="right"
+        android:layout_marginEnd="30dp"
+        tools:listitem="@layout/spinner_genre"
+        android:clickable="true"
+        android:layout_marginTop="12dp"
+        android:tooltipText="Chọn thể loại..." />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Danh sách truyện"
+        android:textSize="20sp"
+        android:layout_margin="12dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-
+        android:layout_margin="12dp"
         android:id="@+id/rcv_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/top_nav"
-        android:layout_marginTop="20dp"/>
+        />
 
-</RelativeLayout>
+</LinearLayout>

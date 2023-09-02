@@ -13,6 +13,10 @@
         android:title="Viết"
         android:icon="@drawable/ic_create"/>
     <item
+        android:id="@+id/menu_search"
+        android:title="Tìm kiếm"
+        android:icon="@drawable/ic_search"/>
+    <item
         android:id="@+id/menu_account"
         android:title="Tài khoản"
         android:icon="@drawable/ic_account"/>

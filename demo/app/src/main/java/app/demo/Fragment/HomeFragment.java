@@ -40,7 +40,6 @@ public class HomeFragment extends Fragment {
         rcvBook.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
         listBook = new ArrayList<>();
         getListBook();
-//        CallAPI(13);
         return view;
     }
 

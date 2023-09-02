@@ -80,9 +80,9 @@ public class BookDetail extends AppCompatActivity {
         }
 //        book.setId(id);
         tvBookName.setText(book.getNameBook());
-        tvGenre.setText("Thể loại: "+sb.toString());
+        tvGenre.setText("Thể loại: "+ sb);
         tvAuthor.setText("Tác giả: "+book.getUser().getUserName());
-        tvDescribe.setText(book.getDescribe().toString());
+        tvDescribe.setText(book.getDescribe());
         Glide.with(getApplicationContext()).load(book.getCoverImg()).into(imgCover);
         Glide.with(getApplicationContext()).load(book.getCoverImg()).into(imgBigCover);
 
@@ -151,8 +151,6 @@ public class BookDetail extends AppCompatActivity {
             }
         });
     }
-
-
     private void removeBookFromFavorites(long id, Long id1) {
         APIService.API_SERVICE.removeBookFromFavorites(id, id1).enqueue(new Callback<Void>() {
             @Override
@@ -167,8 +165,6 @@ public class BookDetail extends AppCompatActivity {
             }
         });
     }
-
-
     private void addBookInFavorites(long id, Long id1) {
         APIService.API_SERVICE.addBookInFavorites(id, id1).enqueue(new Callback<Void>() {
             @Override

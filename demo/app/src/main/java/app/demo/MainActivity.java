@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.demo.API.APIService;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setIcon(R.drawable.r);
+        listBook = new ArrayList<>();
+        getAllBook();
 
 //        rcvResult = findViewById(R.id.rcv_search);
 //        rcvResult.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
@@ -78,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                     mViewPager.setCurrentItem(2);
                 } else if (id == R.id.menu_account) {
                     mViewPager.setCurrentItem(3);
+                } else if (id == R.id.menu_search) {
+                    mViewPager.setCurrentItem(4);
                 }
                 return true;}
         });
@@ -98,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 3:
                         mBotNav.getMenu().findItem(R.id.menu_account).setChecked(true);
+                        break;
+                    case 4:
+                        mBotNav.getMenu().findItem(R.id.menu_search).setChecked(true);
                         break;
                     default:
                         mBotNav.getMenu().findItem(R.id.menu_home).setChecked(true);
@@ -124,32 +133,43 @@ public class MainActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.img_avatar){
             mViewPager.setCurrentItem(3);
-        } else if(item.getItemId() == R.id.search) {
-//            //            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-////            searchView = (SearchView) mToolBar.findViewById(R.id.search);
-////            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-            Intent intent = new Intent(MainActivity.this, Search.class);
-            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.top_menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.top_menu, menu);
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        searchView = (SearchView) mToolBar.getMenu().findItem(R.id.search).getActionView();
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//
+//        bookAdapter = new BookAdapter(listBook);
+//        rcvResult.setAdapter(bookAdapter);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                bookAdapter.filter(newText);
+//                return false;
+//            }
+//        });
+//        return true;
+//    }
 
     public void getAllBook() {
         APIService.API_SERVICE.getListBook().enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-                listBook.addAll(response.body());
-                bookAdapter = new BookAdapter(listBook);
-                rcvResult.setAdapter(bookAdapter);
-                Log.d("Error", String.valueOf(listBook.size()));
+                if(response.isSuccessful()){
+                    listBook.addAll(response.body());
+                    Log.d("Error", String.valueOf(listBook.size()));
+                }
+                else Log.d("Error", "Failure");
             }
 
             @Override

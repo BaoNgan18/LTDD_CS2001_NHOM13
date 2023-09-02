@@ -14,9 +14,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.demo.API.APIService;
+import app.demo.Adapter.SpinnerGenres;
 import app.demo.model.Book;
 import app.demo.model.Genre;
 import app.demo.model.User;
@@ -59,12 +62,13 @@ public class UpdateBook extends AppCompatActivity {
     User user;
     Book book, newBook, oldBook;
     Button btnSubmit;
-    List<Genre> genres, listGenre;
+    List<Genre> genres, listGenre, mGenres;
     Uri mUri;
     Toolbar toolbar;
     MultipartBody.Part body;
+    Spinner spGenre;
 
-    private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == Activity.RESULT_OK) {
@@ -105,26 +109,31 @@ public class UpdateBook extends AppCompatActivity {
 
         edtNameBook = findViewById(R.id.edt_namePost);
         edtDescribe = findViewById(R.id.edt_describePost);
-        edtGenre = findViewById(R.id.edt_genrePost);
         imgCoverBook = findViewById(R.id.img_post_cover);
         tvPost = findViewById(R.id.tv_post);
         tvCancel = findViewById(R.id.tv_cancel);
+        spGenre = findViewById(R.id.sp_genre);
 
         oldBook = (Book) getIntent().getSerializableExtra("book");
         Log.d("Error", oldBook.toString());
         edtNameBook.setText(oldBook.getNameBook());
         edtDescribe.setText(oldBook.getDescribe());
+
         StringBuilder sb = new StringBuilder();
         oldBook.getListGenre().forEach(t -> sb.append(t.getNameOfGenre() + ", "));
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
-        edtGenre.setText(sb.toString());
+        edtGenre.setText(sb);
 
         String coverImgUrl = oldBook.getCoverImg();
         Glide.with(getApplicationContext())
                 .load(coverImgUrl)
                 .into(imgCoverBook);
+
+        mGenres = new ArrayList<>();
+        genres = new ArrayList<>();
+        getListGenre();
         tvPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,21 +150,6 @@ public class UpdateBook extends AppCompatActivity {
                 Alert();
             }
         });
-//        else{
-//            genres = new ArrayList<>();
-//            getListGenre();
-//
-//
-//            btnSubmit.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    strGenre = edtGenre.getText().toString();
-//                    strName = edtNameBook.getText().toString();
-//                    strDescribe = edtDescribe.getText().toString();
-//                    book = new Book(strName, listGenre, strDescribe, user);
-//                    updateBook();
-//                }
-//            });
 
         imgCoverBook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,15 +216,29 @@ public class UpdateBook extends AppCompatActivity {
 
 
     private void getListGenre() {
-        APIService.API_SERVICE.getListGenre().enqueue(new Callback<List<Genre>>() {
+        APIService.API_SERVICE.getAllGenre().enqueue(new Callback<List<Genre>>() {
             @Override
             public void onResponse(Call<List<Genre>> call, Response<List<Genre>> response) {
                 if (response.isSuccessful()) {
                     genres.addAll(response.body());
-//                    for (Genre g : genres) {
-//                        if (strGenre.trim().toLowerCase().contains(g.getNameOfGenre().toLowerCase()))
-//                            listGenre.add(g);
-//                    }
+                  if (genres.isEmpty()) {
+                        Log.d("Error", "khong co listChapter");
+                    } else {
+                        SpinnerGenres adapter = new SpinnerGenres(getApplicationContext(), R.layout.spinner_genre, genres);
+                        spGenre.setAdapter(adapter);
+//                        spGenre.setSelection(0);
+                        spGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                Genre g = (Genre) spGenre.getItemAtPosition(i);
+                                mGenres.add(g);
+                            }
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
+                    }
                 }
             }
 
