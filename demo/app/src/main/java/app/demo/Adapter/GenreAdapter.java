@@ -1,6 +1,7 @@
 package app.demo.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.demo.API.APIService;
+import app.demo.BookDetail;
+import app.demo.PostBook;
 import app.demo.R;
 import app.demo.model.Book;
 import app.demo.model.Genre;
@@ -26,15 +29,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHolder> {
-    private List<Genre> genres, tempList;
+public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHolder>{
+    private final List<Genre> genres;
+    private final List<Genre> tempList;
     List<Book> listBook;
 
     public GenreAdapter(List<Genre> genres) {
         this.genres = genres;
         this.tempList = genres;
     }
-
     @NonNull
     @Override
     public GenreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,10 +50,15 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
 
         Genre genre = genres.get(position);
 
-            holder.tvGenreName.setText(genre.getNameOfGenre());
-            getListBook(genre.getId());
-            BookAdapter bookAdapter = new BookAdapter(listBook);
-            holder.rcvBook.setAdapter(bookAdapter);
+        holder.tvGenreName.setText(genre.getNameOfGenre());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), PostBook.class);
+                intent.putExtra("Genre", genre);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -60,7 +68,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
         return 0;
     }
 
-    public static class GenreViewHolder extends  RecyclerView.ViewHolder{
+    public class GenreViewHolder extends  RecyclerView.ViewHolder {
         TextView tvGenreName;
         RecyclerView rcvBook;
         public GenreViewHolder(@NonNull View itemView) {

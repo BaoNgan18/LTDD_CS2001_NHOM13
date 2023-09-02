@@ -9,6 +9,7 @@ import app.demo.Fragment.AccountFragment;
 import app.demo.Fragment.HomeFragment;
 import app.demo.Fragment.LibraryFragment;
 import app.demo.Fragment.PostFragment;
+import app.demo.Fragment.SearchFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
@@ -29,12 +30,14 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                 return new PostFragment();
             case 3:
                 return new AccountFragment();
+            case 4:
+                return new SearchFragment();
             default:
                 return new HomeFragment();
         }}
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 5;
     }
 }

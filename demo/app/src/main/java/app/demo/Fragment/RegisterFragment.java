@@ -59,8 +59,14 @@ public class RegisterFragment extends Fragment {
                 strEmail = edtEmail.getText().toString();
                 strUserName = edtUserName.getText().toString();
                 strPassword = edtPassword.getText().toString();
-
-                findUserByEmail(strEmail);
+                if(strEmail.isEmpty() || strUserName.isEmpty() || strPassword.isEmpty())
+                {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    tvMessage.setText("Nhập đầy đủ thông tin");
+                }
+                else {
+                    findUserByEmail(strEmail);
+                }
 
             }
 

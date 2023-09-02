@@ -79,15 +79,16 @@
         android:inputType="textMultiLine"
         android:paddingStart="4dp"
         android:textSize="18dp" />
-
-    <View
+    <Spinner
+        android:id="@+id/sp_genre"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/black"
-        android:paddingStart="4dp" />
+        android:layout_height="50dp"
+        android:background="@drawable/bg_title"
+        android:textAlignment="center"
+        tools:listitem="@layout/spinner_genre"
+        android:clickable="true"
+        android:layout_marginStart="6dp"
+        android:tooltipText="Chọn thể loại..." />
 
     <EditText
         android:id="@+id/edt_describePost"

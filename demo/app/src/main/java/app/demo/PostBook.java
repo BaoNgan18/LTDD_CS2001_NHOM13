@@ -1,5 +1,7 @@
 package app.demo;
 
+import static app.demo.R.color.gray;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -7,6 +9,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
@@ -15,15 +21,25 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -31,10 +47,16 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Spliterator;
 
 import app.demo.API.APIService;
+import app.demo.Adapter.GenreAdapter;
+import app.demo.Adapter.SpinnerAdapter;
+import app.demo.Adapter.SpinnerGenres;
 import app.demo.model.Book;
+import app.demo.model.Chapter;
 import app.demo.model.Genre;
 import app.demo.model.User;
 import okhttp3.MediaType;
@@ -46,11 +68,12 @@ import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import app.demo.Adapter.GenreAdapter;
 
 public class PostBook extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 10;
-    private final static String KEY_UPDATE="Update";
+    private final static String KEY_UPDATE = "Update";
 
     AlertDialog dialog;
     MultipartBody.Part body;
@@ -61,10 +84,12 @@ public class PostBook extends AppCompatActivity {
     User user;
     Book book, newBook, oldBook;
     Button btnSubmit;
-    List<Genre> genres, listGenre;
+    List<Genre> genres, listGenre, mGenres;
     Uri mUri;
+    Spinner spGenre;
 
-    private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == Activity.RESULT_OK) {
@@ -102,42 +127,40 @@ public class PostBook extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btn_submitPost);
         edtNameBook = findViewById(R.id.edt_namePost);
         edtDescribe = findViewById(R.id.edt_describePost);
-        edtGenre = findViewById(R.id.edt_genrePost);
+        spGenre = findViewById(R.id.sp_genre);
         imgCoverBook = findViewById(R.id.img_post_cover);
         tvPost = findViewById(R.id.tv_post);
         tvCancel = findViewById(R.id.tv_cancel);
+        edtGenre = findViewById(R.id.edt_genrePost);
 
-            genres = new ArrayList<>();
-            getListGenre();
+        mGenres = new ArrayList<>();
+        genres = new ArrayList<>();
+        getListGenre();
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                strName = edtNameBook.getText().toString();
+                strDescribe = edtDescribe.getText().toString();
+                book = new Book(strName, mGenres, strDescribe, user);
+                postBook(book, user.getId());
+            }
+        });
 
-
-            btnSubmit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    strGenre = edtGenre.getText().toString();
-                    strName = edtNameBook.getText().toString();
-                    strDescribe = edtDescribe.getText().toString();
-                    book = new Book(strName, listGenre, strDescribe, user);
-                    postBook(book, user.getId());
-                }
-            });
-
-            imgCoverBook.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onClickRequestPermission();
-                }
-            });
+        imgCoverBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickRequestPermission();
+            }
+        });
     }
 
     private void updateBook(Long id, Book newBook) {
         APIService.API_SERVICE.updateBook(id, newBook).enqueue(new Callback<Book>() {
             @Override
             public void onResponse(Call<Book> call, Response<Book> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Log.d("Error", "Update book success");
-                }
-                else {
+                } else {
                     Log.d("Error", "Update book failure");
                 }
             }
@@ -153,8 +176,7 @@ public class PostBook extends AppCompatActivity {
         APIService.API_SERVICE.postBook(book, id).enqueue(new Callback<Book>() {
             @Override
             public void onResponse(Call<Book> call, Response<Book> response) {
-                if(response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
                     Log.d("Error", "Post book Success");
                     Book b = response.body();
 
@@ -167,12 +189,10 @@ public class PostBook extends AppCompatActivity {
                     MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
                     postCoverImg(body, b.getId());
 
-
                     Intent intent = new Intent(PostBook.this, PostChapter.class);
-                    intent.putExtra("NewBook", b);
+                    intent.putExtra("book", b);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     Log.d("Error", "Post book failure");
                 }
             }
@@ -181,11 +201,10 @@ public class PostBook extends AppCompatActivity {
                 APIService.API_SERVICE.postCoverImg(body, id).enqueue(new Callback<Book>() {
                     @Override
                     public void onResponse(Call<Book> call, Response<Book> response) {
-                        if(response.isSuccessful()){
+                        if (response.isSuccessful()) {
                             Log.d("Error", "Success");
-                        }
-                        else {
-                            Log.d("Error", "Failure " + response.toString());
+                        } else {
+                            Log.d("Error", "Failure " + response);
                         }
                     }
 
@@ -204,17 +223,35 @@ public class PostBook extends AppCompatActivity {
     }
 
 
-
     private void getListGenre() {
-        APIService.API_SERVICE.getListGenre().enqueue(new Callback<List<Genre>>() {
+            APIService.API_SERVICE.getAllGenre().enqueue(new Callback<List<Genre>>() {
             @Override
             public void onResponse(Call<List<Genre>> call, Response<List<Genre>> response) {
                 if (response.isSuccessful()) {
                     genres.addAll(response.body());
-//                    for (Genre g : genres) {
-//                        if (strGenre.trim().toLowerCase().contains(g.getNameOfGenre().toLowerCase()))
-//                            listGenre.add(g);
-//                    }
+
+                    if (genres.isEmpty()) {
+                        Log.d("Error", "khong co listChapter");
+                    } else {
+                        SpinnerGenres adapter = new SpinnerGenres(getApplicationContext(), R.layout.spinner_genre, genres);
+                        spGenre.setAdapter(adapter);
+//                        spGenre.setSelection(0);
+                        spGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                Genre g = (Genre) spGenre.getItemAtPosition(i);
+                                mGenres.add(g);
+                                edtGenre.setText(g.getNameOfGenre());
+                            }
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
+                    }
+                    Log.d("Error", "get success");
+                } else {
+                    Log.d("Error", "get failure");
                 }
             }
 
@@ -225,12 +262,11 @@ public class PostBook extends AppCompatActivity {
         });
     }
 
-    //chon anh tu thu vien
+    //kiem tra quyen va xin cap quyen
     private void onClickRequestPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             openGalery();
-            return;
-        }
+            return;}
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             openGalery();
         } else {
@@ -238,21 +274,22 @@ public class PostBook extends AppCompatActivity {
             requestPermissions(permission, REQUEST_CODE);
         }
     }
-
+    //xac nhan ket qua xin cap quyen và mo thu vien
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openGalery();
-            }
-        }
+            }}
     }
-
+    //mo thu vien
     private void openGalery() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         activityResultLauncher.launch(Intent.createChooser(intent, "Select Image"));
     }
+
+
 }
