@@ -32,6 +32,7 @@ public class SpinnerGenres extends ArrayAdapter<Genre> {
         TextView genreName = convertView.findViewById(R.id.tv_selected);
         List<Genre> genres = new ArrayList<>();
         Genre genre = this.getItem(position);
+        genreName.setText("Chọn thể loại:");
         if(genre != null)
         {
             genreName.setText(genre.getNameOfGenre());
@@ -43,7 +44,8 @@ public class SpinnerGenres extends ArrayAdapter<Genre> {
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.spinner_genre, parent, false);
         TextView genreName = convertView.findViewById(R.id.tv_selected);
-
+        List<Genre> genres = new ArrayList<>();
+        genreName.setText("Chọn thể loại:");
         Genre genre = this.getItem(position);
         if(genre != null)
         {

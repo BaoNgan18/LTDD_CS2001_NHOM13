@@ -78,6 +78,7 @@ public class BookDetail extends AppCompatActivity {
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
+        tvGenre.setText(sb.toString());
 //        book.setId(id);
         tvBookName.setText(book.getNameBook());
         tvGenre.setText("Thể loại: "+ sb);
