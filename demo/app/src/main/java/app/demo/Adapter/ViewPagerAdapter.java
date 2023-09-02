@@ -29,9 +29,9 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 2:
                 return new PostFragment();
             case 3:
-                return new AccountFragment();
-            case 4:
                 return new SearchFragment();
+            case 4:
+                return new AccountFragment();
             default:
                 return new HomeFragment();
         }}

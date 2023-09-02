@@ -67,6 +67,7 @@ public class UpdateBook extends AppCompatActivity {
     Toolbar toolbar;
     MultipartBody.Part body;
     Spinner spGenre;
+    StringBuilder sb;
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -106,7 +107,7 @@ public class UpdateBook extends AppCompatActivity {
         btnSubmit.setVisibility(View.GONE);
         toolbar = findViewById(R.id.toolBar);
         toolbar.setVisibility(View.VISIBLE);
-
+        edtGenre = findViewById(R.id.edt_genrePost);
         edtNameBook = findViewById(R.id.edt_namePost);
         edtDescribe = findViewById(R.id.edt_describePost);
         imgCoverBook = findViewById(R.id.img_post_cover);
@@ -119,11 +120,12 @@ public class UpdateBook extends AppCompatActivity {
         edtNameBook.setText(oldBook.getNameBook());
         edtDescribe.setText(oldBook.getDescribe());
 
-        StringBuilder sb = new StringBuilder();
+        sb = new StringBuilder();
         oldBook.getListGenre().forEach(t -> sb.append(t.getNameOfGenre() + ", "));
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
+        Log.d("Error", sb.toString());
         edtGenre.setText(sb);
 
         String coverImgUrl = oldBook.getCoverImg();
@@ -167,6 +169,7 @@ public class UpdateBook extends AppCompatActivity {
                     Log.d("Error", "Update book success");
                     Book newBook = response.body();
                     postCoverImg(body, newBook.getId());
+                    onBackPressed();
                 } else {
                     Log.d("Error", "Update book failure");
                 }
@@ -230,8 +233,13 @@ public class UpdateBook extends AppCompatActivity {
                         spGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                Genre g = (Genre) spGenre.getItemAtPosition(i);
-                                mGenres.add(g);
+                                {
+                                    Genre g = (Genre) spGenre.getItemAtPosition(i);
+                                    mGenres.add(g);
+                                    sb.append(", "+g.getNameOfGenre());
+                                    edtGenre.setText(sb.toString());
+                                }
+
                             }
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {

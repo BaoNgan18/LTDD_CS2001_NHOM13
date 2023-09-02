@@ -57,7 +57,7 @@ public class SearchFragment extends Fragment {
 
         rcvResult = view.findViewById(R.id.rcv_search);
         searchView = view.findViewById(R.id.search);
-        spSearch = view.findViewById(R.id.sp_genre);
+//        spSearch = view.findViewById(R.id.sp_genre);
 
 
         rcvResult.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
@@ -86,21 +86,22 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        SpinnerGenres adapter = new SpinnerGenres(SearchFragment.this.getContext(), R.layout.spinner_genre, listGenre);
-        spSearch.setAdapter(adapter);
-        spSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Genre g = (Genre) spSearch.getItemAtPosition(i);
-                getBookByGenre(g.getId());
-                BookAdapter b = new BookAdapter(mBook);
-                rcvResult.setAdapter(b);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//
+//        spSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                SpinnerGenres adapter = new SpinnerGenres(SearchFragment.this.getContext(), R.layout.spinner_genre, listGenre);
+//                spSearch.setAdapter(adapter);
+//                Genre g = (Genre) spSearch.getItemAtPosition(i);
+//                getBookByGenre(g.getId());
+//                BookAdapter b = new BookAdapter(mBook);
+//                rcvResult.setAdapter(b);
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
         return view;
     }
 
